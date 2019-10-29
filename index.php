@@ -7,5 +7,5 @@ if(!isset($_SESSION['id_user_'.$kode_perusahaan]))
 } 
 else
 {
-  navigasi_ke('blank.php');
+  navigasi_ke('dashboard.php');
 }

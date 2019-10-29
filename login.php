@@ -25,7 +25,9 @@ if(isset($_POST['tombol_login']))
     while($row = mysqli_fetch_assoc($res)) 
     {
       $_SESSION['id_user_'.$kode_perusahaan] = $row['id'];
-      $_SESSION['nama_user_'.$kode_perusahaan] = $row['nama'];            
+      $_SESSION['nama_user_'.$kode_perusahaan] = $row['nama']; 
+      $_SESSION['username_'.$kode_perusahaan] = $row['username']; 
+      $_SESSION['logged_time'] = time();           
       navigasi_ke('index.php');
     }
   }
@@ -45,7 +47,7 @@ if(isset($_POST['tombol_login']))
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-      <p class="login-box-msg">Sign in untuk memulai sesi anda</p>
+      <p class="login-box-msg">Silakan memulai sesi anda</p>
       <form action="" method="post">
         <div class="form-group has-feedback">
           <input autofocus type="text" name="username" class="form-control" placeholder="Username">
@@ -73,7 +75,7 @@ if(isset($_POST['tombol_login']))
         <div class="row">
           <!-- /.col -->
           <div class="col-xs-12">
-            <button type="submit" name="tombol_login" class="btn btn-primary btn-block btn-flat">Sign In</button>
+            <button type="submit" name="tombol_login" class="btn btn-primary btn-block btn-flat">Masuk</button>
           </div>
           <!-- /.col -->
         </div>

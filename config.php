@@ -20,4 +20,9 @@ if(isset($_SESSION['id_user_'.$kode_perusahaan]))
 {
   $id_user = $_SESSION['id_user_'.$kode_perusahaan];
   $nama_user = $_SESSION['nama_user_'.$kode_perusahaan];
+  $username = $_SESSION['username_'.$kode_perusahaan];
 }
+$skin = 'skin-black';
+$sidebar_style = '';//sidebar-collapse
+$boxheader_border = 'with-border';
+$login_session_duration = 1800; // 30 minute
