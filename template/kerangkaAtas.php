@@ -4,7 +4,7 @@ include "functions.php";
 if (!isset($_SESSION['id_user_'.$kode_perusahaan])) 
 {
   navigasi_ke('index.php');
-} 
+}  
 if($_SESSION['logged_time'])
 {
   if(((time() - $_SESSION['logged_time']) > $login_session_duration))

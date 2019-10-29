@@ -3,6 +3,13 @@
 $background_genap = 'background:#E0FFFF;';
 $background_ganjil = 'background:#FFFFFF;';
 
+function fch($string)
+{
+  $db = $GLOBALS["db"]; 
+	$variabel =  mysqli_real_escape_string($db,$string);
+	return $variabel;
+}
+
 function get_kode_akun($id_akun)
 {
   $db_accounting = $GLOBALS["db_accounting"];  

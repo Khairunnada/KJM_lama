@@ -2,7 +2,7 @@
   <?php
   if(isset($_GET['kode']))
   {
-    $kode = $_GET['kode'];
+    $kode = fch($_GET['kode']);
     $sql = 
     "SELECT
       a.grup
@@ -10,7 +10,7 @@
       tb_master_navigasi AS a
     WHERE
       a.kode = '".$kode."'";
-    $res = mysqli_query($db,$sql) OR die('error 32');
+    $res = mysqli_query($db,$sql) OR die('error 13');
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))
@@ -62,13 +62,13 @@
                   b.nama,
                   b.file
                 FROM
-                  tb_master_user_detail as a   
+                  tb_master_user_detail AS a   
                 JOIN  
-                  tb_master_navigasi as b on (b.id = a.id_navigasi and b.kode = '".$kode."')
+                  tb_master_navigasi AS b ON (b.id = a.id_navigasi AND b.kode = '".$kode."')
                 WHERE
-                a.id = '".$_SESSION['id_user_'.$kode_perusahaan]."'";
+                a.id = '".$id_user."'";
                 $sql .= " ORDER BY b.nomor";
-                $res = mysqli_query($db,$sql) or die('error 62');
+                $res = mysqli_query($db,$sql) OR die('error 71');
                 if(mysqli_num_rows($res) != 0)
                 {
                   while($row = mysqli_fetch_assoc($res))

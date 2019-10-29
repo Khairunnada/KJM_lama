@@ -27,7 +27,7 @@ if(isset($_POST['tombol_login']))
       $_SESSION['id_user_'.$kode_perusahaan] = $row['id'];
       $_SESSION['nama_user_'.$kode_perusahaan] = $row['nama']; 
       $_SESSION['username_'.$kode_perusahaan] = $row['username']; 
-      $_SESSION['logged_time'] = time();           
+      $_SESSION['logged_time'] = time();                
       navigasi_ke('index.php');
     }
   }
