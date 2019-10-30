@@ -316,7 +316,26 @@ function getNilaiTukar(id_pemasok, tanggal) {
                 <label>Lokasi : </label>
                 <select name="id_lokasi" class="form-control select2" style="width: 100%;" required>
                   <option value="">Pilih..</option>
-                  <option value="1">Kantor Pusat</option>
+                  <?php
+                  $sql = 
+                  "SELECT
+                    a.id,
+                    a.lokasi
+                  FROM
+                    tb_master_lokasi AS a
+                  WHERE
+                    a.aktif = 1";
+                  $res = mysqli_query($db,$sql) OR die('error 327');
+                  if(mysqli_num_rows($res))
+                  {
+                    while($row = mysqli_fetch_assoc($res))
+                    {
+                    ?>
+                  <option value="<?php $row['id']; ?>"><?php echo $row['lokasi']; ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -325,7 +344,26 @@ function getNilaiTukar(id_pemasok, tanggal) {
                 <label>Departemen : </label>
                 <select name="id_lokasi" class="form-control select2" style="width: 100%;" required>
                   <option value="">Pilih..</option>
-                  <option value="1">IT</option>
+                  <?php
+                  $sql = 
+                  "SELECT
+                    a.id,
+                    a.departemen
+                  FROM
+                    tb_master_departemen AS a
+                  WHERE
+                    a.aktif = 1";
+                  $res = mysqli_query($db,$sql) OR die('error 356');
+                  if(mysqli_num_rows($res))
+                  {
+                    while($row = mysqli_fetch_assoc($res))
+                    {
+                    ?>
+                  <option value="<?php $row['id']; ?>"><?php echo $row['departemen']; ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
                 </select>
               </div>
             </div>
@@ -334,7 +372,26 @@ function getNilaiTukar(id_pemasok, tanggal) {
                 <label>Jabatan : </label>
                 <select name="id_lokasi" class="form-control select2" style="width: 100%;" required>
                   <option value="">Pilih..</option>
-                  <option value="1">Senior Programmer</option>
+                  <?php
+                  $sql = 
+                  "SELECT
+                    a.id,
+                    a.jabatan
+                  FROM
+                    tb_master_jabatan AS a
+                  WHERE
+                    a.aktif = 1";
+                  $res = mysqli_query($db,$sql) OR die('error 384');
+                  if(mysqli_num_rows($res))
+                  {
+                    while($row = mysqli_fetch_assoc($res))
+                    {
+                    ?>
+                  <option value="<?php $row['id']; ?>"><?php echo $row['jabatan']; ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
                 </select>
               </div>
             </div>
