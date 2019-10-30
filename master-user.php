@@ -328,7 +328,7 @@ function getNilaiTukar(id_pemasok, tanggal) {
                 ?>
                 <thead>
                   <tr>
-                    <td colspan="9">Tidak Ada Data Ditemukan</td>
+                    <td colspan="12">Tidak Ada Data Ditemukan</td>
                   </tr>
                 </thead>
                 <?php
@@ -379,9 +379,9 @@ function getNilaiTukar(id_pemasok, tanggal) {
                     <td><span class=" label label-<?php echo $label; ?>"><?php echo $status; ?></span></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['created_at'])); ?></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['updated_at'])); ?></td>
-                    <td><a class="fa fa-lg fa-folder-open" style="cursor: pointer;color:black;text-decoration: none;" href="?detail&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-pencil" style="cursor: pointer;color:black;text-decoration: none;" href="?ubah&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-trash " style="cursor: pointer;color:black;text-decoration: none;" href="?hapus&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-folder-open-o" style="cursor: pointer;color:black;text-decoration: none;" href="?detail&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-edit" style="cursor: pointer;color:black;text-decoration: none;" href="?ubah&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:black;text-decoration: none;" href="?hapus&id=<?php echo $row['id']; ?>"></a></td>
                   </tr>
                   <?php
                   }
@@ -589,7 +589,13 @@ function getNilaiTukar(id_pemasok, tanggal) {
     $id = fch($_GET['id']);
     $sql =
     "SELECT
-      *
+      a.nama,
+      a.username,
+      a.password,
+      a.id_lokasi,
+      a.id_departemen,
+      a.id_jabatan,
+      a.aktif
     FROM
       tb_master_user AS a
     WHERE
@@ -754,7 +760,13 @@ function getNilaiTukar(id_pemasok, tanggal) {
     $id = fch($_GET['id']);
     $sql =
     "SELECT
-      *
+      a.nama,
+      a.username,
+      a.password,
+      a.id_lokasi,
+      a.id_departemen,
+      a.id_jabatan,
+      a.aktif
     FROM
       tb_master_user AS a
     WHERE
@@ -791,7 +803,7 @@ function getNilaiTukar(id_pemasok, tanggal) {
               <div class="row">
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
-                  <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Ya</button>
+                  <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
                   <a href="?daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
