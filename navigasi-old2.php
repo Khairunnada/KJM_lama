@@ -70,7 +70,7 @@ if (!isset($_SESSION['id_user_'.$kode_perusahaan]))
               }
             ?>
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-2">
                 <ul class="nav flex-column">
                   <?php
                   $sql =

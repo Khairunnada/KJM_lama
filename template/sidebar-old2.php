@@ -12,34 +12,23 @@
       <?php
       $sql =
       "SELECT
-        a.id,
-        a.ikon,
-        a.nama
+        a.kode,
+        a.grup
       FROM
-        tb_master_navigasi AS a
-      JOIN
-      (
-        SELECT
-          a.id_navigasi
-        FROM
-          tb_master_user_detail AS a
-        WHERE
-          a.id = '".$id_user."'
-        GROUP BY a.id_navigasi
-      ) ta
-      ON ta.id_navigasi = a.id
-      WHERE
-        a.aktif = 1";
+        tb_master_navigasi AS a";
+      $sql .= " GROUP BY a.kode";
       $sql .= " ORDER BY a.posisi";
-      $res = mysqli_query($db,$sql) OR die('error 34');
+      $res = mysqli_query($db,$sql) OR die('error 20');
       if(mysqli_num_rows($res) != 0)
       {
         while($row = mysqli_fetch_assoc($res))
         {
+          $kode = $row['kode'];
+          $grup = $row['grup'];
         ?>
-      <li>
-        <a href="navigasi.php?id_nav=<?php echo $row['id']; ?>">
-          <i class="fa <?php echo $row['ikon']; ?>"></i> <span><?php echo ucwords(strtolower($row['nama'])); ?></span>
+      <li class="<?php if (isset($_GET['k']) AND $_GET['k'] == $kode) {echo 'nav-expanded nav-active';}?>">
+        <a href="navigasi.php?kode=<?php echo $kode; ?>">
+          <i class="fa fa-th"></i> <span><?php echo ucwords(strtolower($grup)); ?></span>
         </a>
       </li>
       <?php

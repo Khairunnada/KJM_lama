@@ -152,7 +152,7 @@ $(function () {
       if (!$('body').hasClass('sidebar-collapse'))
         $('[data-layout="sidebar-collapse"]').click()
     })
-    $pushMenu.expandOnHover() //aktifkan expandOnHover
+    //$pushMenu.expandOnHover() //aktifkan expandOnHover
     //  Reset options
     if ($('body').hasClass('fixed')) {
       $('[data-layout="fixed"]').attr('checked', 'checked')

@@ -1,21 +1,21 @@
   <?php include 'template/kerangkaAtas.php'; ?>
   <?php
-  if(isset($_GET['id_nav']))
+  if(isset($_GET['kode']))
   {
-    $id_nav = fch($_GET['id_nav']);
+    $kode = fch($_GET['kode']);
     $sql = 
     "SELECT
-      a.nama
+      a.grup
     FROM
       tb_master_navigasi AS a
     WHERE
-      a.id = '".$id_nav."'";
+      a.kode = '".$kode."'";
     $res = mysqli_query($db,$sql) OR die('error 13');
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))
       {
-        $nama = ucwords(strtolower($row['nama']));
+        $grup = ucwords(strtolower($row['grup']));
       }
     }
     else
@@ -32,10 +32,10 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1><?php echo $nama; ?></h1>
+      <h1><?php echo $grup; ?></h1>
       <ol class="breadcrumb">
         <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="?kode=<?php echo $kode; ?>"><?php echo $nama; ?></a></li>
+        <li><a href="?kode=<?php echo $kode; ?>"><?php echo $grup; ?></a></li>
         <li class="active">Navigasi</li>
       </ol>
     </section>
@@ -58,25 +58,16 @@
                 <?php
                 $sql =
                 "SELECT
-                  a.file,
-                  a.ikon,
-                  a.nomor,
-                  a.nama
+                  b.nomor,
+                  b.nama,
+                  b.file
                 FROM
-                  tb_master_navigasi_detail AS a
-                JOIN
-                (
-                  SELECT
-                    a.id_navigasi_detail
-                  FROM
-                    tb_master_user_detail AS a
-                  WHERE
-                    a.id = '".$id_user."'
-                ) ta
-                ON ta.id_navigasi_detail = a.id_detail 
+                  tb_master_user_detail AS a   
+                JOIN  
+                  tb_master_navigasi AS b ON (b.id = a.id_navigasi AND b.kode = '".$kode."')
                 WHERE
-                  a.id = '".$id_nav."'";
-                $sql .= " ORDER BY a.posisi";
+                a.id = '".$id_user."'";
+                $sql .= " ORDER BY b.nomor";
                 $res = mysqli_query($db,$sql) OR die('error 71');
                 if(mysqli_num_rows($res) != 0)
                 {
@@ -85,7 +76,7 @@
                   ?>
                 <li class="nav-item">
                   <a class="hovered" href="<?php echo $row['file']; ?>" style="color:black;" target="_blank">
-                    <i class="fa <?php echo $row['ikon']; ?>" aria-hidden="true"></i>
+                    <i class="fa fa-certificate" aria-hidden="true"></i>
                     <span><?php echo $row['nomor']; ?> - <?php echo $row['nama']; ?></span>
                   </a>
                 </li>
