@@ -36,3 +36,9 @@
 
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<style>
+.tr-hover:hover>td {
+  background-color: #47A447 !important;
+  color: yellow !important;
+}
+</style>
