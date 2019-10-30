@@ -2,8 +2,8 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 29, 2019 at 10:57 AM
+-- Host: 127.0.0.1
+-- Generation Time: Oct 30, 2019 at 02:08 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.27
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `KJM`
+-- Database: `kjm`
 --
 
 -- --------------------------------------------------------
@@ -3165,6 +3165,48 @@ INSERT INTO `tb_master_akun_pembukuan` (`id`, `id_parent`, `id_kelompok`, `id_ti
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_master_departemen`
+--
+
+CREATE TABLE `tb_master_departemen` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `departemen` varchar(50) NOT NULL,
+  `aktif` int(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_master_departemen`
+--
+
+INSERT INTO `tb_master_departemen` (`id`, `departemen`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 'IT', 1, '2019-10-30 00:31:18', '2019-10-30 00:31:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_master_jabatan`
+--
+
+CREATE TABLE `tb_master_jabatan` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `jabatan` varchar(50) NOT NULL,
+  `aktif` int(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_master_jabatan`
+--
+
+INSERT INTO `tb_master_jabatan` (`id`, `jabatan`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 'Senior Programmer', 1, '2019-10-30 00:31:39', '2019-10-30 00:31:39');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_master_kurs_pajak`
 --
 
@@ -5651,28 +5693,106 @@ INSERT INTO `tb_master_laporan` (`id`, `grup`, `kode`, `nama`, `file`, `aktif`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_master_lokasi`
+--
+
+CREATE TABLE `tb_master_lokasi` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `lokasi` varchar(50) NOT NULL,
+  `aktif` int(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_master_lokasi`
+--
+
+INSERT INTO `tb_master_lokasi` (`id`, `lokasi`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 'Kantor Pusat', 1, '2019-10-30 00:30:53', '2019-10-30 00:30:53');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_master_navigasi`
 --
 
 CREATE TABLE `tb_master_navigasi` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `grup` varchar(10) NOT NULL,
-  `kode` varchar(10) NOT NULL,
-  `nomor` varchar(10) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `file` varchar(300) NOT NULL,
-  `aktif` int(1) NOT NULL
+  `nama` varchar(50) NOT NULL,
+  `posisi` int(5) NOT NULL,
+  `ikon` varchar(50) NOT NULL,
+  `aktif` int(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_master_navigasi`
 --
 
-INSERT INTO `tb_master_navigasi` (`id`, `grup`, `kode`, `nomor`, `nama`, `file`, `aktif`) VALUES
-(1, 'pembelian', 'B', 'B01', 'Permintaan Barang', 'permintaan.php?refresh&daftar', 1),
-(2, 'pembelian', 'B', 'B02', 'Pemesanan Barang', 'pemesanan.php?refresh&daftar', 1),
-(3, 'pembelian', 'B', 'B03', 'Pembelian Barang', 'pembelian.php?refresh&daftar', 1),
-(4, 'pembelian', 'B', 'B04', 'Pembelian Jasa', 'pembelian-jasa.php?refresh&daftar', 1);
+INSERT INTO `tb_master_navigasi` (`id`, `nama`, `posisi`, `ikon`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 'Pengaturan', 1, 'fa-cog', 1, '2019-10-29 13:00:31', '0000-00-00 00:00:00'),
+(2, 'Pembelian', 2, 'fa-th', 1, '2019-10-29 13:00:35', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_master_navigasi_detail`
+--
+
+CREATE TABLE `tb_master_navigasi_detail` (
+  `id_detail` bigint(20) UNSIGNED NOT NULL,
+  `id` int(10) NOT NULL,
+  `kode` varchar(10) NOT NULL,
+  `nomor` varchar(10) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `file` varchar(100) NOT NULL,
+  `posisi` int(5) NOT NULL,
+  `ikon` varchar(30) NOT NULL,
+  `aktif` int(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_master_navigasi_detail`
+--
+
+INSERT INTO `tb_master_navigasi_detail` (`id_detail`, `id`, `kode`, `nomor`, `nama`, `file`, `posisi`, `ikon`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 1, '', '', 'Navigasi', 'pengaturan-navigasi.php?refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-29 13:52:28', '0000-00-00 00:00:00'),
+(2, 2, '', '', 'Permintaan Barang', 'permintaan.php?refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-29 13:52:29', '0000-00-00 00:00:00'),
+(3, 2, '', '', 'Pemesanan Barang', 'pemesanan.php?refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-29 13:52:31', '0000-00-00 00:00:00'),
+(4, 2, '', '', 'Pembelian Barang', 'pembelian.php?refresh&daftar', 3, 'fa-asterisk', 1, '2019-10-29 13:52:32', '0000-00-00 00:00:00'),
+(5, 1, '', '', 'User', 'master-user.php?refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-29 14:37:42', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_master_navigasi_detail_old`
+--
+
+CREATE TABLE `tb_master_navigasi_detail_old` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `grup` varchar(10) NOT NULL,
+  `kode` varchar(10) NOT NULL,
+  `nomor` varchar(10) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `file` varchar(300) NOT NULL,
+  `posisi` int(5) NOT NULL,
+  `aktif` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_master_navigasi_detail_old`
+--
+
+INSERT INTO `tb_master_navigasi_detail_old` (`id`, `grup`, `kode`, `nomor`, `nama`, `file`, `posisi`, `aktif`) VALUES
+(1, 'pembelian', 'B', 'B01', 'Permintaan Barang', 'permintaan.php?refresh&daftar', 2, 1),
+(2, 'pembelian', 'B', 'B02', 'Pemesanan Barang', 'pemesanan.php?refresh&daftar', 3, 1),
+(3, 'pembelian', 'B', 'B03', 'Pembelian Barang', 'pembelian.php?refresh&daftar', 4, 1),
+(4, 'pembelian', 'B', 'B04', 'Pembelian Jasa', 'pembelian-jasa.php?refresh&daftar', 5, 1),
+(5, 'pengaturan', 'Pn', 'Pn01', 'Pengaturan Navigasi', 'pengaturan-navigasi.php?refresh&daftar', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -6934,7 +7054,9 @@ CREATE TABLE `tb_master_user` (
   `nama` varchar(50) NOT NULL,
   `username` varchar(30) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  `id_akses` int(2) NOT NULL,
+  `id_lokasi` int(5) NOT NULL,
+  `id_departemen` int(5) NOT NULL,
+  `id_jabatan` int(5) NOT NULL,
   `aktif` int(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
@@ -6944,8 +7066,8 @@ CREATE TABLE `tb_master_user` (
 -- Dumping data for table `tb_master_user`
 --
 
-INSERT INTO `tb_master_user` (`id`, `nama`, `username`, `password`, `id_akses`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 'Adit', 'adit', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 1, '2019-10-28 03:29:36', '0000-00-00 00:00:00');
+INSERT INTO `tb_master_user` (`id`, `nama`, `username`, `password`, `id_lokasi`, `id_departemen`, `id_jabatan`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 'Adit', 'adit', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, '2019-10-29 14:32:49', '2019-10-28 03:29:36');
 
 -- --------------------------------------------------------
 
@@ -6957,6 +7079,7 @@ CREATE TABLE `tb_master_user_detail` (
   `id_detail` bigint(20) UNSIGNED NOT NULL,
   `id` int(10) NOT NULL,
   `id_navigasi` int(10) NOT NULL,
+  `id_navigasi_detail` int(10) NOT NULL,
   `aktif` int(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
@@ -6966,10 +7089,12 @@ CREATE TABLE `tb_master_user_detail` (
 -- Dumping data for table `tb_master_user_detail`
 --
 
-INSERT INTO `tb_master_user_detail` (`id_detail`, `id`, `id_navigasi`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2019-10-28 07:36:38', '0000-00-00 00:00:00'),
-(2, 1, 2, 1, '2019-10-28 07:36:38', '0000-00-00 00:00:00'),
-(3, 1, 3, 1, '2019-10-28 07:36:38', '0000-00-00 00:00:00');
+INSERT INTO `tb_master_user_detail` (`id_detail`, `id`, `id_navigasi`, `id_navigasi_detail`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, '2019-10-29 13:40:51', '0000-00-00 00:00:00'),
+(2, 1, 2, 2, 1, '2019-10-29 13:17:13', '0000-00-00 00:00:00'),
+(3, 1, 2, 3, 1, '2019-10-29 13:17:17', '0000-00-00 00:00:00'),
+(4, 1, 2, 4, 1, '2019-10-29 13:17:17', '0000-00-00 00:00:00'),
+(5, 1, 1, 5, 1, '2019-10-29 13:40:51', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -19423,6 +19548,20 @@ ALTER TABLE `tb_master_akun_pembukuan`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `tb_master_departemen`
+--
+ALTER TABLE `tb_master_departemen`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `tb_master_jabatan`
+--
+ALTER TABLE `tb_master_jabatan`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `tb_master_kurs_pajak`
 --
 ALTER TABLE `tb_master_kurs_pajak`
@@ -19444,9 +19583,30 @@ ALTER TABLE `tb_master_laporan`
   ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indexes for table `tb_master_lokasi`
+--
+ALTER TABLE `tb_master_lokasi`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `tb_master_navigasi`
 --
 ALTER TABLE `tb_master_navigasi`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `tb_master_navigasi_detail`
+--
+ALTER TABLE `tb_master_navigasi_detail`
+  ADD PRIMARY KEY (`id_detail`),
+  ADD UNIQUE KEY `id_detail` (`id_detail`);
+
+--
+-- Indexes for table `tb_master_navigasi_detail_old`
+--
+ALTER TABLE `tb_master_navigasi_detail_old`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
@@ -19520,6 +19680,18 @@ ALTER TABLE `tb_master_akun_pembukuan`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2064;
 
 --
+-- AUTO_INCREMENT for table `tb_master_departemen`
+--
+ALTER TABLE `tb_master_departemen`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tb_master_jabatan`
+--
+ALTER TABLE `tb_master_jabatan`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tb_master_kurs_pajak`
 --
 ALTER TABLE `tb_master_kurs_pajak`
@@ -19538,16 +19710,34 @@ ALTER TABLE `tb_master_laporan`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
+-- AUTO_INCREMENT for table `tb_master_lokasi`
+--
+ALTER TABLE `tb_master_lokasi`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `tb_master_navigasi`
 --
 ALTER TABLE `tb_master_navigasi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tb_master_navigasi_detail`
+--
+ALTER TABLE `tb_master_navigasi_detail`
+  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tb_master_navigasi_detail_old`
+--
+ALTER TABLE `tb_master_navigasi_detail_old`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_master_pemasok`
 --
 ALTER TABLE `tb_master_pemasok`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2372;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2371;
 
 --
 -- AUTO_INCREMENT for table `tb_master_perusahaan`
@@ -19565,7 +19755,7 @@ ALTER TABLE `tb_master_user`
 -- AUTO_INCREMENT for table `tb_master_user_detail`
 --
 ALTER TABLE `tb_master_user_detail`
-  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tb_pemesanan`
