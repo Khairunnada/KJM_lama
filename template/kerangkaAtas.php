@@ -5,6 +5,15 @@ if (!isset($_SESSION['id_user_'.$kode_perusahaan]))
 {
   navigasi_ke('index.php');
 }  
+if(isset($_GET['id_nav_detail']))
+{
+  $id_nav_detail = fch($_GET['id_nav_detail']);
+  if(cek_page_avail($id_user,$id_nav_detail) == 0)
+  {
+    navigasi_ke('index.php');
+  }
+}
+
 /*if($_SESSION['logged_time'])
 {
   if(((time() - $_SESSION['logged_time']) > $login_session_duration))

@@ -3,6 +3,24 @@
 $background_genap = 'background:#E0FFFF;';
 $background_ganjil = 'background:#FFFFFF;';
 
+function cek_page_avail($id_user,$id_nav_detail)
+{
+  $db = $GLOBALS["db"];
+  $sql =
+  "SELECT
+    *
+  FROM
+    tb_master_user_detail AS a
+  WHERE
+    a.id = '".$id_user."' AND
+    a.id_navigasi_detail = '".$id_nav_detail."'";
+  $res = mysqli_query($db,$sql) OR die('error 19');
+  if(mysqli_num_rows($res) != 0)
+    return 1;
+  else
+    return 0;
+}
+
 function fch($string)
 {
   $db = $GLOBALS["db"]; 

@@ -1,12 +1,5 @@
 <?php include 'template/kerangkaAtas.php'; ?>
 <?php
-if(isset($_GET['refresh']))
-{
-  unset($_SESSION['tombol_filter_master_user']);
-  unset($_SESSION['nama_master_user']);
-  unset($_SESSION['username_master_user']);
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
-}
 if(isset($_GET['pdf']))
 {
   navigasi_ke('master-user-pdf.php');
@@ -14,6 +7,13 @@ if(isset($_GET['pdf']))
 if(isset($_GET['excel']))
 {
   navigasi_ke('master-user-excel.php');
+}
+if(isset($_GET['refresh']))
+{
+  unset($_SESSION['tombol_filter_master_user']);
+  unset($_SESSION['nama_master_user']);
+  unset($_SESSION['username_master_user']);
+  navigasi_ke('?daftar');
 }
 if(isset($_POST['tombol_tambah']))
 {
@@ -57,7 +57,7 @@ if(isset($_POST['tombol_tambah']))
     null
   )";
   mysqli_query($db,$sql) OR die('error 57');
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
+  navigasi_ke('?daftar&id='.$id.'&sukses_tambah');
 }
 if(isset($_POST['tombol_ubah']))
 {
@@ -95,7 +95,7 @@ if(isset($_POST['tombol_ubah']))
     null
   )";
   mysqli_query($db,$sql) OR die('error 95');
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_ubah');
+  navigasi_ke('?daftar&id='.$id.'&sukses_ubah');
 }
 if(isset($_POST['tombol_hapus']))
 {
@@ -120,72 +120,37 @@ if(isset($_POST['tombol_hapus']))
     null
   )";
   mysqli_query($db,$sql) OR die('error 120');
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus');
+  navigasi_ke('?daftar&id='.$id.'&sukses_hapus');
 }
+
 if(isset($_POST['tombol_update']))
 {
-  $id = fch($_POST['id']);  
-  $sql =
-  "DELETE FROM
-    tb_master_user_detail
-  WHERE
-    id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 136');
-
-  if(isset($_POST['navigasi_detail']) AND count($_POST['navigasi_detail']) != 0)
-  {
-    $navigasi_detail = $_POST['navigasi_detail'];
-    foreach ($navigasi_detail as $id_navigasi_detail)
-    { 
-      $sql =
-      "SELECT
-        a.id
-      FROM
-        tb_master_navigasi_detail AS a
-      WHERE
-        a.id_detail = '".$id_navigasi_detail."'";
-      $res = mysqli_query($db,$sql) OR die('error 140');
-      if(mysqli_num_rows($res) != 0)
-      {
-        while($row = mysqli_fetch_assoc($res))
-        {
-          $id_navigasi = $row['id'];
-        }
-      }  
-      $sql =
-      "INSERT INTO
-        tb_master_user_detail
-      VALUES
-      (
-        default,
-        '".$id."',
-        '".$id_navigasi."',
-        '".$id_navigasi_detail."',
-        1,
-        NOW(),
-        null
-      )";
-      mysqli_query($db,$sql) OR die('error 161');
-      $id_detail = mysqli_insert_id($db);
-      $sql =
-      "INSERT INTO
-        tb_log
-      VALUES
-      (
-        default,
-        'tb_master_user_detail',
-        '".$id_detail."',
-        'insert',
-        '".$id_user."',      
-        NOW(),
-        null
-      )";
-      mysqli_query($db,$sql) OR die('error 175');
-    }
-  }  
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&detail&id='.$id.'&sukses_update');
+  $navigasi_detail = $_POST['navigasi_detail'];
+  foreach ($navigasi_detail as $id_navigasi_detail)
+  { 
+    echo 'sdfsdfsdfdsfsdfsdfsdf'.$id_navigasi_detail."<br />";
+  }
 }
 ?>
+<script>
+function getNilaiTukar(id_pemasok, tanggal) {
+  if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+  } else {
+    // code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var x = document.getElementById("nilai_tukar");
+      x.value = this.responseText;
+    }
+  };
+  xmlhttp.open("GET", "json/get-nilai-tukar.php?id_pemasok=" + id_pemasok + "&tanggal=" + tanggal, true);
+  xmlhttp.send();
+}
+</script>
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
@@ -193,7 +158,7 @@ if(isset($_POST['tombol_update']))
     </h1>
     <ol class="breadcrumb">
       <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar">User</a></li>
+      <li><a href="?refresh&daftar">User</a></li>
     </ol>
   </section>
   <?php
@@ -215,9 +180,9 @@ if(isset($_POST['tombol_update']))
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&tambah"><i class="fa fa-sm fa-file-o"></i>Tambah</a></li>
+                  <li><a href="?tambah"><i class="fa fa-sm fa-file-o"></i>Tambah</a></li>
                   <li><a data-toggle="modal" href="#ModalFilter"><i class="fa fa-sm fa-search"></i> Filter</a></li>
-                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar"><i class="fa fa-sm fa-refresh"></i>Refresh</a></li>
+                  <li><a href="?refresh&daftar"><i class="fa fa-sm fa-refresh"></i>Refresh</a></li>
                 </ul>
               </div>
               <div class="btn-group">
@@ -227,8 +192,8 @@ if(isset($_POST['tombol_update']))
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&pdf" target="_blank"><i class="fa fa-sm fa-file-pdf-o"></i>PDF</a></li>
-                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&excel" target="_blank"><i class="fa fa-sm fa-file-excel-o"></i>Excel</a></li>
+                  <li><a href="?pdf" target="_blank"><i class="fa fa-sm fa-file-pdf-o"></i>PDF</a></li>
+                  <li><a href="?excel" target="_blank"><i class="fa fa-sm fa-file-excel-o"></i>Excel</a></li>
                 </ul>
               </div>
             </div>
@@ -290,7 +255,7 @@ if(isset($_POST['tombol_update']))
                 {
                   if(isset($_POST['tombol_filter']))
                   {
-                    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
+                    navigasi_ke('?daftar');
                     if($_POST['data_per_halaman'] == '') $_POST['data_per_halaman'] = 0;                  
                     $_SESSION['tombol_filter_master_user'] = $_POST['tombol_filter'];
                     $_SESSION['nama_master_user'] = $_POST['nama'];
@@ -384,7 +349,7 @@ if(isset($_POST['tombol_update']))
                   <tr>
                     <th>No.</th>
                     <th>ID</th>
-                    <th>Nama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Nama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=nama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=nama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Username</th>
                     <th>Password</th>
                     <th>Lokasi</th>
@@ -423,9 +388,9 @@ if(isset($_POST['tombol_update']))
                     <td><span class=" label label-<?php echo $label; ?>"><?php echo $status; ?></span></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['created_at'])); ?></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['updated_at'])); ?></td>
-                    <td><a class="fa fa-lg fa-folder-open-o" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&detail&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-edit" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&ubah&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&hapus&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-folder-open-o" style="cursor: pointer;color:black;text-decoration: none;" href="?detail&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-edit" style="cursor: pointer;color:black;text-decoration: none;" href="?ubah&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:black;text-decoration: none;" href="?hapus&id=<?php echo $row['id']; ?>"></a></td>
                   </tr>
                   <?php
                   }
@@ -511,7 +476,7 @@ if(isset($_POST['tombol_update']))
         $departemen = $row['departemen'];
         $jabatan = $row['jabatan'];
       }
-    }    
+    }
   ?>
   <section class="content">
     <div class="row">
@@ -562,87 +527,83 @@ if(isset($_POST['tombol_update']))
           </div>
           <form method="POST">
             <div class="box-body">
-              <?php
-              if(isset($_GET['sukses_update']))
-              {
-              ?>
-              <div class="alert alert-success" style="padding:5px;">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <div style="color:black;">Berhasil Mengubah Navigasi User</div>
-              </div>
-              <?php
-              }
-              ?>
               <div class="table-responsive no-padding">
                 <table class="table">
                   <thead>
                     <tr>
                       <th>Navigasi</th>
-                      <th>Status</th>
+                      <th>Sub Navigasi</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php
-                    $sql =
-                    "SELECT
-                      a.id,
-                      a.nama
-                    FROM
-                      tb_master_navigasi AS a";
-                    $res = mysqli_query($db,$sql) OR die('error 547');
-                    if(mysqli_num_rows($res) != 0)
+                  <?php
+                  $arr_navigasi_utama = array();
+                  $sql =
+                  "SELECT
+                    a.id,
+                    a.nama,
+                    count(b.id_detail) AS jumlah_detail
+                  FROM
+                    tb_master_navigasi AS a
+                  LEFT JOIN
+                    tb_master_navigasi_detail AS b ON (b.id = a.id)";
+                  $sql .= " GROUP BY a.nama";
+                  $sql .= " ORDER BY a.posisi";
+                  $res = mysqli_query($db,$sql) OR die('error 541');
+                  while($row = mysqli_fetch_assoc($res))
+                  {
+                    $arr_navigasi_utama[$row['id']] = array("nama"=>$row['nama'],"jumlah_detail"=>$row['jumlah_detail']);
+
+                  }
+
+                  $arr_navigasi_sub = array();
+                  $sql =
+                  "SELECT
+                    a.id,
+                    b.nama,
+                    c.id_navigasi_detail
+                  FROM
+                    tb_master_navigasi AS a
+                  LEFT JOIN
+                    tb_master_navigasi_detail AS b ON (b.id = a.id)
+                  LEFT JOIN
+                    tb_master_user_detail AS c ON (c.id_navigasi_detail = b.id_detail AND c.id = '".$id."')";
+                  $sql .= " ORDER BY b.posisi";
+                  $res = mysqli_query($db,$sql) OR die('error 560');
+                  while($row = mysqli_fetch_assoc($res))
+                  {
+                    $arr_navigasi_sub[$row['id']]['id_navigasi_detail'][] = $row['id_navigasi_detail'];
+                    $arr_navigasi_sub[$row['id']]['nama'][] = $row['nama'];                  
+                  }
+                
+                  foreach($arr_navigasi_utama as $key => $value)
+                  {
+                    $jumlah_terceklis = 0;
+                    foreach($arr_navigasi_sub[$key]['id_navigasi_detail'] as $key2 => $value2)
                     {
-                      while($row = mysqli_fetch_assoc($res))
-                      {
-                      ?>
-                    <tr>
-                      <td><i class="fa fa-sm fa-tags"></i> <?php echo $row['nama']; ?></td>
-                    </tr>
-                    <?php
-                        $sql2 =
-                        "SELECT
-                          a.id_detail,
-                          a.nama
-                        FROM
-                          tb_master_navigasi_detail AS a
-                        WHERE
-                          a.id = '".$row['id']."'";
-                        $res2 = mysqli_query($db,$sql2) OR die('error 565');
-                        if(mysqli_num_rows($res2) != 0)
-                        {
-                          while($row2 = mysqli_fetch_assoc($res2))
-                          {
-                            $sql3 =
-                            "SELECT
-                              a.id_detail
-                            FROM
-                              tb_master_user_detail AS a
-                            WHERE
-                              a.id = '".$id."' AND
-                              a.id_navigasi_detail = '".$row2['id_detail']."'";
-                            $res3 = mysqli_query($db,$sql3) OR die('error 578');
-                            if(mysqli_num_rows($res3) != 0)
-                              $checked = 1;
-                            else  
-                              $checked = 0;
-                          ?>
-                    <tr>
-                      <td style="padding-left:1cm;"><i class="fa fa-sm fa-tag"></i> <?php echo $row2['nama']; ?></td>
-                      <td><input name="navigasi_detail[]" type="checkbox" <?php if($checked == 1) echo 'checked';?> value="<?php echo $row2['id_detail']; ?>" class="flat-red"></td>
-                    </tr>
-                    <?php
-                          }
-                        }
-                      }
-                    }
+                      if($value2 != 0)
+                        $jumlah_terceklis += 1;
+                    }                  
+                  ?>
+                  <tr>
+                    <td colspan="2"><input name="navigasi_utama[]" type="checkbox" class="flat-red" <?php if($jumlah_terceklis == $value["jumlah_detail"]) echo 'checked'; ?>><?php echo $value["nama"]; ?></td>
+                  </tr>
+                  <?php
+                    foreach($arr_navigasi_sub[$key]['nama'] as $key1 => $value1)
+                    {
                     ?>
-                  </tbody>
+                  <tr>
+                    <td style="width:3cm;"></td>
+                    <td><input name="navigasi_detail[]" value="" type="checkbox" class="flat-red" <?php if($arr_navigasi_sub[$key]['id_navigasi_detail'][$key1] != 0) echo 'checked';?>><?php echo $arr_navigasi_sub[$key]['id_navigasi_detail'][$key1]; ?><?php echo $value1; ?></td>
+                  </tr>
+                  <?php
+                    }
+                  }
+                  ?>
                 </table>
               </div>
             </div>
             <div class="box-footer">
-              <input type="hidden" name="id" value="<?php echo $id; ?>">
-              <button type="submit" name="tombol_update" class="btn btn-flat btn-sm btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
+              <button type="submit" name="tombol_update" class="btn btn-flat btn-sm btn-success">Update</button>
             </div>
           </form>
         </div>
@@ -786,7 +747,7 @@ if(isset($_POST['tombol_update']))
               <div class="row">
                 <div class="col-md-2">
                   <button type="submit" name="tombol_tambah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>
@@ -957,7 +918,7 @@ if(isset($_POST['tombol_update']))
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
                   <button type="submit" name="tombol_ubah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>
@@ -1021,7 +982,7 @@ if(isset($_POST['tombol_update']))
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
                   <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>

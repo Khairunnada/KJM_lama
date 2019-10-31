@@ -39,6 +39,6 @@
 <style>
 .tr-hover:hover>td {
   background-color: #47A447 !important;
-  color: yellow !important;
+  color: white !important;
 }
 </style>

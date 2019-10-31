@@ -11,7 +11,7 @@ if(isset($_GET['excel']))
 if(isset($_GET['refresh']))
 {
   unset($_SESSION['tombol_filter_pemesanan']);
-  navigasi_ke('?daftar');
+  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
 }
 if(isset($_POST['tombol_tambah']))
 {
@@ -20,7 +20,7 @@ if(isset($_POST['tombol_tambah']))
   $id_pemasok = fch($_POST['id_pemasok']);
   $nilai_tukar = fch($_POST['nilai_tukar']);
   if($nilai_tukar == '')
-    navigasi_ke('?tambah&error_nilai_tukar');
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&tambah&error_nilai_tukar');
   else
   {
     $sql = 
@@ -78,7 +78,7 @@ if(isset($_POST['tombol_tambah']))
       null
     )";
     mysqli_query($db,$sql) OR die('error 39');
-    navigasi_ke('?daftar&sukses');
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses');
   }
 }
 ?>
@@ -110,7 +110,7 @@ function getNilaiTukar(id_pemasok, tanggal) {
     </h1>
     <ol class="breadcrumb">
       <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li><a href="?refresh&daftar">Pemesanan</a></li>
+      <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar">Pemesanan</a></li>
     </ol>
   </section>
   <?php
@@ -245,12 +245,12 @@ function getNilaiTukar(id_pemasok, tanggal) {
         <div class="row">
           <div class="col-xs-6">
             <a class="btn btn-sm btn-primary" data-toggle="modal" href="#ModalFilter"><i class="fa fa-sm fa-search"></i> Filter</a>
-            <a href="?refresh&daftar" class="btn btn-sm btn-primary"><i class="fa fa-sm fa-refresh"></i> Refresh</a>
-            <a href="?tambah" class="btn btn-sm btn-primary"><i class="fa fa-sm fa-file"></i> Tambah</a>
+            <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar" class="btn btn-sm btn-primary"><i class="fa fa-sm fa-refresh"></i> Refresh</a>
+            <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&tambah" class="btn btn-sm btn-primary"><i class="fa fa-sm fa-file"></i> Tambah</a>
           </div>
           <div class="col-xs-6" style="text-align:right;">
-            <a href="?pdf" target="_blank" class="btn btn-sm btn-danger"><i class="fa fa-sm fa-file-pdf-o"></i> Cetak PDF</a>
-            <a href="?excel" target="_blank" class="btn btn-sm btn-success"> <i class="fa fa-sm fa-file-excel-o"></i> Cetak Excel</a>
+            <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&pdf" target="_blank" class="btn btn-sm btn-danger"><i class="fa fa-sm fa-file-pdf-o"></i> Cetak PDF</a>
+            <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&excel" target="_blank" class="btn btn-sm btn-success"> <i class="fa fa-sm fa-file-excel-o"></i> Cetak Excel</a>
           </div>
         </div>
         <br>
@@ -273,9 +273,9 @@ function getNilaiTukar(id_pemasok, tanggal) {
               ?>
               <thead>
                 <tr>
-                  <td>Tgl. <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tanggal' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=tanggal&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tanggal' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=tanggal&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
-                  <td>Nomor <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nomor' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=nomor&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nomor' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=nomor&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
-                  <td>Supplier <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='pemasok' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=pemasok&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='pemasok' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?daftar&sort_by=pemasok&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
+                  <td>Tgl. <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tanggal' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=tanggal&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tanggal' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=tanggal&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
+                  <td>Nomor <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nomor' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nomor&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nomor' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nomor&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
+                  <td>Supplier <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='pemasok' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=pemasok&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='pemasok' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=pemasok&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></td>
                   <td>PPN (%)</td>
                   <td>M.U</td>
                   <td>Sub Total</td>
@@ -310,12 +310,12 @@ function getNilaiTukar(id_pemasok, tanggal) {
                   <td><?php echo number_format($row['total'] * $row['nilai_tukar'],2); ?></td>
                   <td><?php echo $row['nama']; ?></td>
                   <td><a class="fa fa-print fa-lg" style="cursor: pointer;color:black;text-decoration: none;" href="pengembalian-per-barang-pdf.php?id=<?php echo $row['id']; ?>" target="_blank"></a></td>
-                  <td><a class="fa fa-list fa-lg" style="cursor: pointer;color:black;text-decoration: none;" href="?detail&id=<?php echo $row['id']; ?>"></a></td>
+                  <td><a class="fa fa-list fa-lg" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&detail&id=<?php echo $row['id']; ?>"></a></td>
                   <?php
                   if($tahun_pemesanan == $tahun_now)
                   {
                   ?>
-                  <td><a class="fa fa-trash fa-lg" style="cursor: pointer;color:black;text-decoration: none;" href="?hapus&id=<?php echo $row['id']; ?>"></a></td>
+                  <td><a class="fa fa-trash fa-lg" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&hapus&id=<?php echo $row['id']; ?>"></a></td>
                   <?php
                   }
                   else
