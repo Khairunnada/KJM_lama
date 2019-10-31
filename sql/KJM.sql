@@ -2,8 +2,8 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 30, 2019 at 02:08 AM
+-- Host: localhost
+-- Generation Time: Oct 31, 2019 at 11:53 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.27
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `kjm`
+-- Database: `KJM`
 --
 
 -- --------------------------------------------------------
@@ -1343,7 +1343,86 @@ INSERT INTO `tb_log` (`id`, `tabel`, `id_tabel`, `aksi`, `id_user`, `created_at`
 (1341, 'tb_faktur_penjualan_detail', 462, 'insert', 22, '2019-10-25 06:47:21', NULL),
 (1342, 'tb_pemesanan', 6689, 'insert', 1, '2019-10-29 08:31:20', NULL),
 (1343, 'tb_pemesanan', 6690, 'insert', 1, '2019-10-29 08:51:55', NULL),
-(1344, 'tb_pemesanan', 3, 'insert', 1, '2019-10-29 08:54:37', NULL);
+(1344, 'tb_pemesanan', 3, 'insert', 1, '2019-10-29 08:54:37', NULL),
+(1345, 'tb_master_user', 2, 'insert', 1, '2019-10-30 02:16:52', NULL),
+(1346, 'tb_master_user', 3, 'insert', 1, '2019-10-30 02:18:18', NULL),
+(1347, 'tb_master_user', 4, 'insert', 1, '2019-10-30 02:23:40', NULL),
+(1348, 'tb_master_user', 5, 'insert', 1, '2019-10-30 03:19:14', NULL),
+(1349, 'tb_master_user', 6, 'insert', 1, '2019-10-30 05:45:00', NULL),
+(1350, 'tb_master_user', 7, 'insert', 1, '2019-10-30 05:49:11', NULL),
+(1351, 'tb_master_user', 8, 'insert', 1, '2019-10-30 05:50:14', NULL),
+(1352, 'tb_master_user', 9, 'insert', 1, '2019-10-30 06:11:45', NULL),
+(1353, 'tb_master_user', 4, 'update', 1, '2019-10-30 06:46:49', NULL),
+(1354, 'tb_master_user', 4, 'update', 1, '2019-10-30 06:47:00', NULL),
+(1355, 'tb_master_user', 4, 'update', 1, '2019-10-30 06:47:15', NULL),
+(1356, 'tb_master_user', 9, 'update', 1, '2019-10-30 06:48:09', NULL),
+(1357, 'tb_master_user', 3, 'update', 1, '2019-10-30 06:51:33', NULL),
+(1358, 'tb_master_user', 10, 'insert', 1, '2019-10-30 06:51:59', NULL),
+(1359, 'tb_master_user', 2, 'delete', 1, '2019-10-30 07:02:03', NULL),
+(1360, 'tb_master_user', 11, 'insert', 1, '2019-10-30 07:28:05', NULL),
+(1361, 'tb_master_user', 12, 'insert', 1, '2019-10-30 07:29:45', NULL),
+(1362, 'tb_master_user', 13, 'insert', 1, '2019-10-30 07:30:22', NULL),
+(1363, 'tb_master_user', 14, 'insert', 1, '2019-10-30 07:31:23', NULL),
+(1364, 'tb_master_user', 15, 'insert', 1, '2019-10-30 07:33:06', NULL),
+(1365, 'tb_master_user', 16, 'insert', 1, '2019-10-30 07:34:19', NULL),
+(1366, 'tb_master_user', 17, 'insert', 1, '2019-10-30 07:37:29', NULL),
+(1367, 'tb_master_user', 15, 'delete', 1, '2019-10-30 07:45:44', NULL),
+(1368, 'tb_master_user', 16, 'delete', 1, '2019-10-30 07:55:55', NULL),
+(1369, 'tb_master_user', 5, 'update', 1, '2019-10-31 02:07:25', NULL),
+(1370, 'tb_master_user', 1, 'update', 1, '2019-10-31 06:33:21', NULL),
+(1371, 'tb_master_user_detail', 6, 'insert', 1, '2019-10-31 09:19:59', NULL),
+(1372, 'tb_master_user_detail', 7, 'insert', 1, '2019-10-31 09:20:50', NULL),
+(1373, 'tb_master_user_detail', 8, 'insert', 1, '2019-10-31 09:20:50', NULL),
+(1374, 'tb_master_user_detail', 9, 'insert', 1, '2019-10-31 09:24:18', NULL),
+(1375, 'tb_master_user_detail', 10, 'insert', 1, '2019-10-31 09:24:31', NULL),
+(1376, 'tb_master_user_detail', 11, 'insert', 1, '2019-10-31 09:24:31', NULL),
+(1377, 'tb_master_user_detail', 12, 'insert', 1, '2019-10-31 09:27:53', NULL),
+(1378, 'tb_master_user_detail', 13, 'insert', 1, '2019-10-31 09:33:53', NULL),
+(1379, 'tb_master_user_detail', 14, 'insert', 1, '2019-10-31 09:33:53', NULL),
+(1380, 'tb_master_user_detail', 15, 'insert', 1, '2019-10-31 09:35:13', NULL),
+(1381, 'tb_master_user_detail', 16, 'insert', 1, '2019-10-31 09:35:13', NULL),
+(1382, 'tb_master_user_detail', 17, 'insert', 1, '2019-10-31 09:35:33', NULL),
+(1383, 'tb_master_user_detail', 18, 'insert', 1, '2019-10-31 09:35:33', NULL),
+(1384, 'tb_master_user_detail', 19, 'insert', 1, '2019-10-31 09:35:33', NULL),
+(1385, 'tb_master_user_detail', 20, 'insert', 1, '2019-10-31 09:35:33', NULL),
+(1386, 'tb_master_user_detail', 21, 'insert', 1, '2019-10-31 09:35:33', NULL),
+(1387, 'tb_master_user_detail', 22, 'insert', 1, '2019-10-31 09:43:57', NULL),
+(1388, 'tb_master_user_detail', 23, 'insert', 1, '2019-10-31 09:43:57', NULL),
+(1389, 'tb_master_user_detail', 24, 'insert', 1, '2019-10-31 09:43:57', NULL),
+(1390, 'tb_master_user_detail', 25, 'insert', 1, '2019-10-31 09:43:57', NULL),
+(1391, 'tb_master_user_detail', 26, 'insert', 1, '2019-10-31 09:43:57', NULL),
+(1392, 'tb_master_user_detail', 27, 'insert', 1, '2019-10-31 09:47:04', NULL),
+(1393, 'tb_master_user_detail', 28, 'insert', 1, '2019-10-31 09:47:04', NULL),
+(1394, 'tb_master_user_detail', 29, 'insert', 1, '2019-10-31 09:47:04', NULL),
+(1395, 'tb_master_user_detail', 30, 'insert', 1, '2019-10-31 09:47:04', NULL),
+(1396, 'tb_master_user_detail', 31, 'insert', 1, '2019-10-31 09:48:17', NULL),
+(1397, 'tb_master_user_detail', 32, 'insert', 1, '2019-10-31 09:48:17', NULL),
+(1398, 'tb_master_user_detail', 33, 'insert', 1, '2019-10-31 10:05:44', NULL),
+(1399, 'tb_master_user_detail', 34, 'insert', 1, '2019-10-31 10:05:44', NULL),
+(1400, 'tb_master_user_detail', 35, 'insert', 1, '2019-10-31 10:05:44', NULL),
+(1401, 'tb_master_user_detail', 36, 'insert', 1, '2019-10-31 10:07:21', NULL),
+(1402, 'tb_master_user_detail', 37, 'insert', 1, '2019-10-31 10:07:21', NULL),
+(1403, 'tb_master_user_detail', 38, 'insert', 1, '2019-10-31 10:08:05', NULL),
+(1404, 'tb_master_user_detail', 39, 'insert', 1, '2019-10-31 10:08:05', NULL),
+(1405, 'tb_master_user_detail', 40, 'insert', 1, '2019-10-31 10:08:05', NULL),
+(1406, 'tb_master_user_detail', 41, 'insert', 1, '2019-10-31 10:24:59', NULL),
+(1407, 'tb_master_user_detail', 42, 'insert', 1, '2019-10-31 10:24:59', NULL),
+(1408, 'tb_master_user_detail', 43, 'insert', 1, '2019-10-31 10:25:07', NULL),
+(1409, 'tb_master_user_detail', 44, 'insert', 1, '2019-10-31 10:26:58', NULL),
+(1410, 'tb_master_user_detail', 45, 'insert', 1, '2019-10-31 10:26:58', NULL),
+(1411, 'tb_master_user_detail', 46, 'insert', 1, '2019-10-31 10:32:32', NULL),
+(1412, 'tb_master_user_detail', 47, 'insert', 1, '2019-10-31 10:33:03', NULL),
+(1413, 'tb_master_user_detail', 48, 'insert', 1, '2019-10-31 10:33:03', NULL),
+(1414, 'tb_master_user_detail', 49, 'insert', 1, '2019-10-31 10:35:03', NULL),
+(1415, 'tb_master_user_detail', 50, 'insert', 1, '2019-10-31 10:35:03', NULL);
+INSERT INTO `tb_log` (`id`, `tabel`, `id_tabel`, `aksi`, `id_user`, `created_at`, `updated_at`) VALUES
+(1416, 'tb_master_user_detail', 51, 'insert', 1, '2019-10-31 10:38:53', NULL),
+(1417, 'tb_master_user_detail', 52, 'insert', 1, '2019-10-31 10:39:02', NULL),
+(1418, 'tb_master_user_detail', 53, 'insert', 1, '2019-10-31 10:39:02', NULL),
+(1419, 'tb_master_user_detail', 54, 'insert', 1, '2019-10-31 10:44:36', NULL),
+(1420, 'tb_master_user_detail', 55, 'insert', 1, '2019-10-31 10:46:41', NULL),
+(1421, 'tb_master_user_detail', 56, 'insert', 1, '2019-10-31 10:46:41', NULL),
+(1422, 'tb_master_user_detail', 57, 'insert', 1, '2019-10-31 10:47:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -5709,7 +5788,8 @@ CREATE TABLE `tb_master_lokasi` (
 --
 
 INSERT INTO `tb_master_lokasi` (`id`, `lokasi`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 'Kantor Pusat', 1, '2019-10-30 00:30:53', '2019-10-30 00:30:53');
+(1, 'Kantor Pusat', 1, '2019-10-30 00:30:53', '2019-10-30 00:30:53'),
+(2, 'Cabang', 1, '2019-10-30 06:45:18', '2019-10-30 06:45:18');
 
 -- --------------------------------------------------------
 
@@ -5748,6 +5828,7 @@ CREATE TABLE `tb_master_navigasi_detail` (
   `nomor` varchar(10) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `file` varchar(100) NOT NULL,
+  `postfix` varchar(50) NOT NULL,
   `posisi` int(5) NOT NULL,
   `ikon` varchar(30) NOT NULL,
   `aktif` int(1) NOT NULL,
@@ -5759,12 +5840,12 @@ CREATE TABLE `tb_master_navigasi_detail` (
 -- Dumping data for table `tb_master_navigasi_detail`
 --
 
-INSERT INTO `tb_master_navigasi_detail` (`id_detail`, `id`, `kode`, `nomor`, `nama`, `file`, `posisi`, `ikon`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 1, '', '', 'Navigasi', 'pengaturan-navigasi.php?refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-29 13:52:28', '0000-00-00 00:00:00'),
-(2, 2, '', '', 'Permintaan Barang', 'permintaan.php?refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-29 13:52:29', '0000-00-00 00:00:00'),
-(3, 2, '', '', 'Pemesanan Barang', 'pemesanan.php?refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-29 13:52:31', '0000-00-00 00:00:00'),
-(4, 2, '', '', 'Pembelian Barang', 'pembelian.php?refresh&daftar', 3, 'fa-asterisk', 1, '2019-10-29 13:52:32', '0000-00-00 00:00:00'),
-(5, 1, '', '', 'User', 'master-user.php?refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-29 14:37:42', '0000-00-00 00:00:00');
+INSERT INTO `tb_master_navigasi_detail` (`id_detail`, `id`, `kode`, `nomor`, `nama`, `file`, `postfix`, `posisi`, `ikon`, `aktif`, `created_at`, `updated_at`) VALUES
+(1, 1, '', '', 'Navigasi', 'pengaturan-navigasi.php', '&refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-31 10:33:20', '0000-00-00 00:00:00'),
+(2, 2, '', '', 'Permintaan Barang', 'permintaan.php', '&refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-31 10:33:26', '0000-00-00 00:00:00'),
+(3, 2, '', '', 'Pemesanan Barang', 'pemesanan.php', '&refresh&daftar', 2, 'fa-asterisk', 1, '2019-10-31 10:33:30', '0000-00-00 00:00:00'),
+(4, 2, '', '', 'Pembelian Barang', 'pembelian.php', '&refresh&daftar', 3, 'fa-asterisk', 1, '2019-10-31 10:33:34', '0000-00-00 00:00:00'),
+(5, 1, '', '', 'User', 'master-user.php', '&refresh&daftar', 1, 'fa-asterisk', 1, '2019-10-31 10:13:19', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -7058,6 +7139,7 @@ CREATE TABLE `tb_master_user` (
   `id_departemen` int(5) NOT NULL,
   `id_jabatan` int(5) NOT NULL,
   `aktif` int(1) NOT NULL,
+  `id_user` int(15) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -7066,8 +7148,21 @@ CREATE TABLE `tb_master_user` (
 -- Dumping data for table `tb_master_user`
 --
 
-INSERT INTO `tb_master_user` (`id`, `nama`, `username`, `password`, `id_lokasi`, `id_departemen`, `id_jabatan`, `aktif`, `created_at`, `updated_at`) VALUES
-(1, 'Adit', 'adit', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, '2019-10-29 14:32:49', '2019-10-28 03:29:36');
+INSERT INTO `tb_master_user` (`id`, `nama`, `username`, `password`, `id_lokasi`, `id_departemen`, `id_jabatan`, `aktif`, `id_user`, `created_at`, `updated_at`) VALUES
+(1, 'Adit', 'adit', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 1, 1, 1, 1, '2019-10-31 06:33:21', '2019-10-28 03:29:36'),
+(3, 'dianx', 'dianx', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 06:51:33', '2019-10-30 02:18:18'),
+(4, 'diana', 'diana', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 06:47:15', '2019-10-30 02:23:40'),
+(5, 'hendra', 'hendrax', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 1, 1, 1, 1, '2019-10-31 02:07:25', '2019-10-30 03:19:14'),
+(6, 'ni', 'ni', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 05:45:00', '2019-10-30 05:45:00'),
+(7, 'joko', 'joko', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 05:49:11', '2019-10-30 05:49:11'),
+(8, 'toni', 'toni', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 05:50:14', '2019-10-30 05:50:14'),
+(9, 'jono', 'jonox', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 06:48:09', '2019-10-30 06:11:44'),
+(10, 'gan', 'gan', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 06:51:59', '2019-10-30 06:51:59'),
+(11, 'nex', 'nex', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 07:28:05', '2019-10-30 07:28:05'),
+(12, 'sdf', 'sdf', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 07:29:45', '2019-10-30 07:29:45'),
+(13, 'll', 'l', '531c154c293dfa54ca8eb77046c68c1aad5eb1f8', 0, 0, 0, 1, 1, '2019-10-30 07:30:22', '2019-10-30 07:30:22'),
+(14, 'e', 'e', 'adcd7048512e64b48da55b027577886ee5a36350', 0, 0, 0, 1, 1, '2019-10-30 07:31:23', '2019-10-30 07:31:23'),
+(17, 'anto', 'anto', 'adcd7048512e64b48da55b027577886ee5a36350', 1, 1, 1, 1, 1, '2019-10-30 07:37:29', '2019-10-30 07:37:29');
 
 -- --------------------------------------------------------
 
@@ -7092,9 +7187,10 @@ CREATE TABLE `tb_master_user_detail` (
 INSERT INTO `tb_master_user_detail` (`id_detail`, `id`, `id_navigasi`, `id_navigasi_detail`, `aktif`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 1, 1, '2019-10-29 13:40:51', '0000-00-00 00:00:00'),
 (2, 1, 2, 2, 1, '2019-10-29 13:17:13', '0000-00-00 00:00:00'),
-(3, 1, 2, 3, 1, '2019-10-29 13:17:17', '0000-00-00 00:00:00'),
+(3, 1, 2, 3, 1, '2019-10-31 08:07:10', '0000-00-00 00:00:00'),
 (4, 1, 2, 4, 1, '2019-10-29 13:17:17', '0000-00-00 00:00:00'),
-(5, 1, 1, 5, 1, '2019-10-29 13:40:51', '0000-00-00 00:00:00');
+(5, 1, 1, 5, 1, '2019-10-29 13:40:51', '0000-00-00 00:00:00'),
+(57, 17, 2, 4, 1, '2019-10-31 10:47:33', '2019-10-31 10:47:33');
 
 -- --------------------------------------------------------
 
@@ -19671,7 +19767,7 @@ ALTER TABLE `tb_kas_old`
 -- AUTO_INCREMENT for table `tb_log`
 --
 ALTER TABLE `tb_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1345;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1423;
 
 --
 -- AUTO_INCREMENT for table `tb_master_akun_pembukuan`
@@ -19713,7 +19809,7 @@ ALTER TABLE `tb_master_laporan`
 -- AUTO_INCREMENT for table `tb_master_lokasi`
 --
 ALTER TABLE `tb_master_lokasi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_master_navigasi`
@@ -19749,13 +19845,13 @@ ALTER TABLE `tb_master_perusahaan`
 -- AUTO_INCREMENT for table `tb_master_user`
 --
 ALTER TABLE `tb_master_user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tb_master_user_detail`
 --
 ALTER TABLE `tb_master_user_detail`
-  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `tb_pemesanan`
