@@ -8,6 +8,25 @@ if (!isset($_SESSION['id_user_'.$kode_perusahaan]))
 if(isset($_GET['id_nav_detail']))
 {
   $id_nav_detail = fch($_GET['id_nav_detail']);
+  $sql =
+  "SELECT
+    b.id,
+    b.nama
+  FROM
+    tb_master_navigasi_detail AS a
+  JOIN
+    tb_master_navigasi AS b ON (b.id = a.id)
+  WHERE
+    a.id_detail = '".$id_nav_detail."'";
+  $res = mysqli_query($db,$sql) OR die('error 18');
+  if(mysqli_num_rows($res) != 0)
+  {
+    while($row = mysqli_fetch_assoc($res))
+    {
+      $id_nav = $row['id'];
+      $nav = $row['nama'];
+    }    
+  }
   if(cek_page_avail($id_user,$id_nav_detail) == 0)
   {
     navigasi_ke('index.php');

@@ -27,3 +27,4 @@ $skin = 'skin-black';
 $sidebar_style = 'sidebar-collapse';//sidebar-collapse
 $boxheader_border = 'with-border';
 $login_session_duration = 1800; // 30 minute
+$warna_blok = 'DarkSeaGreen';

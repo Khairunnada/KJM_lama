@@ -33,6 +33,14 @@ $(function() {
   //Initialize Select2 Elements
   $('.select2').select2()
 
+  function formatText(icon) {
+    return $('<span><i class="fa fa-sm ' + $(icon.element).data('icon') + '"></i> ' + icon.text + '</span>');
+  };
+  $('.select2-icon').select2({
+    templateSelection: formatText,
+    templateResult: formatText
+  });
+
   //Datemask dd/mm/yyyy
   $('#datemask').inputmask('dd/mm/yyyy', {
     'placeholder': 'dd/mm/yyyy'

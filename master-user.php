@@ -2,16 +2,16 @@
 <?php
 if(isset($_GET['refresh']))
 {
-  unset($_SESSION['tombol_filter_master_user']);
-  unset($_SESSION['id_master_user']);
-  unset($_SESSION['nama_master_user']);
-  unset($_SESSION['username_master_user']);
-  unset($_SESSION['id_lokasi_master_user']);
-  unset($_SESSION['id_departemen_master_user']);
-  unset($_SESSION['id_jabatan_master_user']);
-  unset($_SESSION['aktif_master_user']);
-  unset($_SESSION['created_at_master_user']);
-  unset($_SESSION['updated_at_master_user']);
+  unset($_SESSION['tombol_filter_'.$id_nav_detail]);
+  unset($_SESSION['id_'.$id_nav_detail]);
+  unset($_SESSION['nama_'.$id_nav_detail]);
+  unset($_SESSION['username_'.$id_nav_detail]);
+  unset($_SESSION['id_lokasi_'.$id_nav_detail]);
+  unset($_SESSION['id_departemen_'.$id_nav_detail]);
+  unset($_SESSION['id_jabatan_'.$id_nav_detail]);
+  unset($_SESSION['aktif_'.$id_nav_detail]);
+  unset($_SESSION['created_at_'.$id_nav_detail]);
+  unset($_SESSION['updated_at_'.$id_nav_detail]);
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
 }
 if(isset($_GET['pdf']))
@@ -48,7 +48,7 @@ if(isset($_POST['tombol_tambah']))
     NOW(),
     null
   )";
-  mysqli_query($db,$sql) OR die('error 42');
+  mysqli_query($db,$sql) OR die('error 51');
   $id = mysqli_insert_id($db); 
   $sql =
   "INSERT INTO
@@ -63,7 +63,7 @@ if(isset($_POST['tombol_tambah']))
     NOW(),
     null
   )";
-  mysqli_query($db,$sql) OR die('error 57');
+  mysqli_query($db,$sql) OR die('error 66');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
 }
 if(isset($_POST['tombol_ubah']))
@@ -84,10 +84,11 @@ if(isset($_POST['tombol_ubah']))
     a.id_lokasi = '".$id_lokasi."',
     a.id_departemen = '".$id_departemen."',
     a.id_jabatan = '".$id_jabatan."',
-    a.aktif = '".$aktif."'
+    a.aktif = '".$aktif."',
+    a.updated_at = NOW()
   WHERE
     a.id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 74');
+  mysqli_query($db,$sql) OR die('error 90');
   $sql =
   "INSERT INTO
     tb_log
@@ -101,7 +102,7 @@ if(isset($_POST['tombol_ubah']))
     NOW(),
     null
   )";
-  mysqli_query($db,$sql) OR die('error 95');
+  mysqli_query($db,$sql) OR die('error 104');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_ubah');
 }
 if(isset($_POST['tombol_hapus']))
@@ -112,7 +113,7 @@ if(isset($_POST['tombol_hapus']))
     tb_master_user
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 106');
+  mysqli_query($db,$sql) OR die('error 115');
   $sql =
   "INSERT INTO
     tb_log
@@ -126,7 +127,7 @@ if(isset($_POST['tombol_hapus']))
     NOW(),
     null
   )";
-  mysqli_query($db,$sql) OR die('error 120');
+  mysqli_query($db,$sql) OR die('error 129');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus');
 }
 if(isset($_POST['tombol_update']))
@@ -137,8 +138,7 @@ if(isset($_POST['tombol_update']))
     tb_master_user_detail
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 136');
-
+  mysqli_query($db,$sql) OR die('error 140');
   if(isset($_POST['navigasi_detail']) AND count($_POST['navigasi_detail']) != 0)
   {
     $navigasi_detail = $_POST['navigasi_detail'];
@@ -151,7 +151,7 @@ if(isset($_POST['tombol_update']))
         tb_master_navigasi_detail AS a
       WHERE
         a.id_detail = '".$id_navigasi_detail."'";
-      $res = mysqli_query($db,$sql) OR die('error 140');
+      $res = mysqli_query($db,$sql) OR die('error 153');
       if(mysqli_num_rows($res) != 0)
       {
         while($row = mysqli_fetch_assoc($res))
@@ -172,7 +172,7 @@ if(isset($_POST['tombol_update']))
         NOW(),
         null
       )";
-      mysqli_query($db,$sql) OR die('error 161');
+      mysqli_query($db,$sql) OR die('error 174');
       $id_detail = mysqli_insert_id($db);
       $sql =
       "INSERT INTO
@@ -187,7 +187,7 @@ if(isset($_POST['tombol_update']))
         NOW(),
         null
       )";
-      mysqli_query($db,$sql) OR die('error 175');
+      mysqli_query($db,$sql) OR die('error 189');
     }
   }  
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&detail&id='.$id.'&sukses_update');
@@ -196,10 +196,11 @@ if(isset($_POST['tombol_update']))
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      User
+      <a style="color:black;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar">User</a>
     </h1>
     <ol class="breadcrumb">
       <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li><a href="navigasi.php?id_nav=<?php echo $id_nav; ?>"><?php echo $nav; ?></a></li>
       <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar">User</a></li>
     </ol>
   </section>
@@ -293,23 +294,23 @@ if(isset($_POST['tombol_update']))
                   tb_master_departemen AS c ON (c.id = a.id_departemen)
                 LEFT JOIN
                   tb_master_jabatan AS d ON (d.id = a.id_jabatan)";
-                if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_master_user']))
+                if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                 {
                   if(isset($_POST['tombol_filter']))
                   {
                     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
                     if($_POST['data_per_halaman'] == '') $_POST['data_per_halaman'] = 0;                  
-                    $_SESSION['tombol_filter_master_user'] = $_POST['tombol_filter'];
-                    $_SESSION['id_master_user'] = $_POST['id'];
-                    $_SESSION['nama_master_user'] = $_POST['nama'];
-                    $_SESSION['username_master_user'] = $_POST['username'];
-                    $_SESSION['id_lokasi_master_user'] = $_POST['id_lokasi'];
-                    $_SESSION['id_departemen_master_user'] = $_POST['id_departemen'];
-                    $_SESSION['id_jabatan_master_user'] = $_POST['id_jabatan'];
-                    $_SESSION['aktif_master_user'] = $_POST['aktif'];
-                    $_SESSION['created_at_master_user'] = $_POST['created_at'];
-                    $_SESSION['updated_at_master_user'] = $_POST['updated_at'];
-                    $_SESSION['data_per_halaman_master_user'] = $_POST['data_per_halaman'];
+                    $_SESSION['tombol_filter_'.$id_nav_detail] = $_POST['tombol_filter'];
+                    $_SESSION['id_'.$id_nav_detail] = $_POST['id'];
+                    $_SESSION['nama_'.$id_nav_detail] = $_POST['nama'];
+                    $_SESSION['username_'.$id_nav_detail] = $_POST['username'];
+                    $_SESSION['id_lokasi_'.$id_nav_detail] = $_POST['id_lokasi'];
+                    $_SESSION['id_departemen_'.$id_nav_detail] = $_POST['id_departemen'];
+                    $_SESSION['id_jabatan_'.$id_nav_detail] = $_POST['id_jabatan'];
+                    $_SESSION['aktif_'.$id_nav_detail] = $_POST['aktif'];
+                    $_SESSION['created_at_'.$id_nav_detail] = $_POST['created_at'];
+                    $_SESSION['updated_at_'.$id_nav_detail] = $_POST['updated_at'];
+                    $_SESSION['data_per_halaman_'.$id_nav_detail] = $_POST['data_per_halaman'];
                     $id = $_POST['id'];
                     $nama = $_POST['nama'];        
                     $username = $_POST['username'];
@@ -321,19 +322,19 @@ if(isset($_POST['tombol_update']))
                     $updated_at = $_POST['updated_at'];
                     $data_per_halaman = $_POST['data_per_halaman'];
                   }
-                  else if(isset($_SESSION['tombol_filter_master_user']))
+                  else if(isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                   {
-                    $tombol_filter = $_SESSION['tombol_filter_master_user']; 
-                    $id = $_SESSION['id_master_user']; 
-                    $nama = $_SESSION['nama_master_user'];   
-                    $username = $_SESSION['username_master_user'];  
-                    $id_lokasi = $_SESSION['id_lokasi_master_user']; 
-                    $id_departemen = $_SESSION['id_departemen_master_user']; 
-                    $id_jabatan = $_SESSION['id_jabatan_master_user'];  
-                    $aktif = $_SESSION['aktif_master_user'];
-                    $created_at = $_SESSION['created_at_master_user'];
-                    $updated_at = $_SESSION['updated_at_master_user'];
-                    $data_per_halaman = $_SESSION['data_per_halaman_master_user'];
+                    $tombol_filter = $_SESSION['tombol_filter_'.$id_nav_detail]; 
+                    $id = $_SESSION['id_'.$id_nav_detail]; 
+                    $nama = $_SESSION['nama_'.$id_nav_detail];   
+                    $username = $_SESSION['username_'.$id_nav_detail];  
+                    $id_lokasi = $_SESSION['id_lokasi_'.$id_nav_detail]; 
+                    $id_departemen = $_SESSION['id_departemen_'.$id_nav_detail]; 
+                    $id_jabatan = $_SESSION['id_jabatan_'.$id_nav_detail];  
+                    $aktif = $_SESSION['aktif_'.$id_nav_detail];
+                    $created_at = $_SESSION['created_at_'.$id_nav_detail];
+                    $updated_at = $_SESSION['updated_at_'.$id_nav_detail];
+                    $data_per_halaman = $_SESSION['data_per_halaman_'.$id_nav_detail];
                   } 
                   $sql .= " WHERE a.nama LIKE '%".$nama."%'";
                   $sql .= " AND a.username LIKE '%".$username."%'";
@@ -399,7 +400,7 @@ if(isset($_POST['tombol_update']))
                 }             
                 $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
                 $mulai = ($page > 1) ? ($page * $data_per_halaman) - $data_per_halaman : 0;
-                $result = mysqli_query($db,$sql) OR die('error 615');
+                $result = mysqli_query($db,$sql) OR die('error 401');
                 $total = mysqli_num_rows($result);              
                 if($data_per_halaman!=0)
                 {
@@ -410,7 +411,7 @@ if(isset($_POST['tombol_update']))
                 {
                   $pages = 0;
                 }
-                $res = mysqli_query($db,$sql) OR die('error 626');
+                $res = mysqli_query($db,$sql) OR die('error 412');
                 $nomor = $mulai + 1;
                 $sort_by = '';
                 if(isset($_GET['sort_by']) AND isset($_GET['order']))
@@ -434,17 +435,17 @@ if(isset($_POST['tombol_update']))
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>ID <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=id&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=id&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Nama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Username <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=username&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=username&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>ID <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=id&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=id&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Nama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=nama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=nama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Username <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=username&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=username&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Password</th>
-                    <th>Lokasi <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=lokasi&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=lokasi&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Departemen <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=departemen&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=departemen&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Jabatan <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=jabatan&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=jabatan&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Status <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=aktif&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=aktif&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Created At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=created_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=created_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Updated At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=updated_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=updated_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th colspan="3"></th>
+                    <th>Lokasi <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=lokasi&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=lokasi&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Departemen <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=departemen&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=departemen&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Jabatan <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=jabatan&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=jabatan&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Status <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=aktif&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=aktif&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Created At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=created_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=created_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Updated At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=updated_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&sort_by=updated_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th colspan="3">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -462,7 +463,7 @@ if(isset($_POST['tombol_update']))
                       $label='danger';
                     }
                     ?>
-                  <tr style="<?php if(isset($_GET['id']) AND $row['id']==$_GET['id']) echo 'background-color:darkorange'; else if ($nomor % 2 == 0) { echo $background_ganjil; } else { echo $background_genap; }?>" class="tr-hover">
+                  <tr style="<?php if(isset($_GET['id']) AND $row['id']==$_GET['id']) echo 'background-color:'.$warna_blok; else if ($nomor % 2 == 0) { echo $background_ganjil; } else { echo $background_genap; }?>" class="tr-hover">
                     <td><?php echo $nomor++; ?></td>
                     <td><?php echo $row['id']; ?></td>
                     <td><?php echo $row['nama']; ?></td>
@@ -512,7 +513,7 @@ if(isset($_POST['tombol_update']))
             WHERE
               a.tabel = 'tb_master_user'"; 
             $sql.=" ORDER BY a.created_at DESC LIMIT 1";
-            $res=mysqli_query($db,$sql) OR die('error 329');
+            $res=mysqli_query($db,$sql) OR die('error 514');
             if(mysqli_num_rows($res)!=0)
             {
               while($row=mysqli_fetch_assoc($res))
@@ -552,7 +553,7 @@ if(isset($_POST['tombol_update']))
       tb_master_jabatan AS d ON (d.id = a.id_jabatan)
     WHERE
       a.id = '".$id."'";
-    $res = mysqli_query($db,$sql) OR die('error 451');
+    $res = mysqli_query($db,$sql) OR die('error 554');
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))
@@ -640,7 +641,7 @@ if(isset($_POST['tombol_update']))
                       a.nama
                     FROM
                       tb_master_navigasi AS a";
-                    $res = mysqli_query($db,$sql) OR die('error 547');
+                    $res = mysqli_query($db,$sql) OR die('error 642');
                     if(mysqli_num_rows($res) != 0)
                     {
                       while($row = mysqli_fetch_assoc($res))
@@ -658,7 +659,7 @@ if(isset($_POST['tombol_update']))
                           tb_master_navigasi_detail AS a
                         WHERE
                           a.id = '".$row['id']."'";
-                        $res2 = mysqli_query($db,$sql2) OR die('error 565');
+                        $res2 = mysqli_query($db,$sql2) OR die('error 660');
                         if(mysqli_num_rows($res2) != 0)
                         {
                           while($row2 = mysqli_fetch_assoc($res2))
@@ -671,7 +672,7 @@ if(isset($_POST['tombol_update']))
                             WHERE
                               a.id = '".$id."' AND
                               a.id_navigasi_detail = '".$row2['id_detail']."'";
-                            $res3 = mysqli_query($db,$sql3) OR die('error 578');
+                            $res3 = mysqli_query($db,$sql3) OR die('error 673');
                             if(mysqli_num_rows($res3) != 0)
                               $checked = 1;
                             else  
@@ -708,7 +709,6 @@ if(isset($_POST['tombol_update']))
 //PAGE_TAMBAH
   if(isset($_GET['tambah']))
   {
-
   ?>
   <section class="content">
     <div class="row">
@@ -752,7 +752,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_lokasi AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 327');
+                      $res = mysqli_query($db,$sql) OR die('error 754');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
@@ -780,7 +780,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_departemen AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 356');
+                      $res = mysqli_query($db,$sql) OR die('error 782');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
@@ -808,7 +808,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_jabatan AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 384');
+                      $res = mysqli_query($db,$sql) OR die('error 810');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
@@ -838,7 +838,7 @@ if(isset($_POST['tombol_update']))
               <div class="row">
                 <div class="col-md-2">
                   <button type="submit" name="tombol_tambah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>
@@ -869,7 +869,7 @@ if(isset($_POST['tombol_update']))
       tb_master_user AS a
     WHERE
       a.id = '".$id."'";
-    $res = mysqli_query($db,$sql) OR die('error 439');
+    $res = mysqli_query($db,$sql) OR die('error 871');
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))
@@ -925,7 +925,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_lokasi AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 327');
+                      $res = mysqli_query($db,$sql) OR die('error 927');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
@@ -952,7 +952,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_departemen AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 356');
+                      $res = mysqli_query($db,$sql) OR die('error 954');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
@@ -979,7 +979,7 @@ if(isset($_POST['tombol_update']))
                         tb_master_jabatan AS a
                       WHERE
                         a.aktif = 1";
-                      $res = mysqli_query($db,$sql) OR die('error 384');
+                      $res = mysqli_query($db,$sql) OR die('error 981');
                       if(mysqli_num_rows($res))
                       {
                         while($row = mysqli_fetch_assoc($res))
