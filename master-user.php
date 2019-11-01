@@ -3,8 +3,15 @@
 if(isset($_GET['refresh']))
 {
   unset($_SESSION['tombol_filter_master_user']);
+  unset($_SESSION['id_master_user']);
   unset($_SESSION['nama_master_user']);
   unset($_SESSION['username_master_user']);
+  unset($_SESSION['id_lokasi_master_user']);
+  unset($_SESSION['id_departemen_master_user']);
+  unset($_SESSION['id_jabatan_master_user']);
+  unset($_SESSION['aktif_master_user']);
+  unset($_SESSION['created_at_master_user']);
+  unset($_SESSION['updated_at_master_user']);
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
 }
 if(isset($_GET['pdf']))
@@ -293,27 +300,39 @@ if(isset($_POST['tombol_update']))
                     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
                     if($_POST['data_per_halaman'] == '') $_POST['data_per_halaman'] = 0;                  
                     $_SESSION['tombol_filter_master_user'] = $_POST['tombol_filter'];
+                    $_SESSION['id_master_user'] = $_POST['id'];
                     $_SESSION['nama_master_user'] = $_POST['nama'];
                     $_SESSION['username_master_user'] = $_POST['username'];
                     $_SESSION['id_lokasi_master_user'] = $_POST['id_lokasi'];
                     $_SESSION['id_departemen_master_user'] = $_POST['id_departemen'];
                     $_SESSION['id_jabatan_master_user'] = $_POST['id_jabatan'];
+                    $_SESSION['aktif_master_user'] = $_POST['aktif'];
+                    $_SESSION['created_at_master_user'] = $_POST['created_at'];
+                    $_SESSION['updated_at_master_user'] = $_POST['updated_at'];
                     $_SESSION['data_per_halaman_master_user'] = $_POST['data_per_halaman'];
+                    $id = $_POST['id'];
                     $nama = $_POST['nama'];        
                     $username = $_POST['username'];
                     $id_lokasi = $_POST['id_lokasi'];
                     $id_departemen = $_POST['id_departemen'];
                     $id_jabatan = $_POST['id_jabatan'];
+                    $aktif = $_POST['aktif'];
+                    $created_at = $_POST['created_at'];
+                    $updated_at = $_POST['updated_at'];
                     $data_per_halaman = $_POST['data_per_halaman'];
                   }
                   else if(isset($_SESSION['tombol_filter_master_user']))
                   {
                     $tombol_filter = $_SESSION['tombol_filter_master_user']; 
+                    $id = $_SESSION['id_master_user']; 
                     $nama = $_SESSION['nama_master_user'];   
                     $username = $_SESSION['username_master_user'];  
                     $id_lokasi = $_SESSION['id_lokasi_master_user']; 
                     $id_departemen = $_SESSION['id_departemen_master_user']; 
                     $id_jabatan = $_SESSION['id_jabatan_master_user'];  
+                    $aktif = $_SESSION['aktif_master_user'];
+                    $created_at = $_SESSION['created_at_master_user'];
+                    $updated_at = $_SESSION['updated_at_master_user'];
                     $data_per_halaman = $_SESSION['data_per_halaman_master_user'];
                   } 
                   $sql .= " WHERE a.nama LIKE '%".$nama."%'";
@@ -337,10 +356,42 @@ if(isset($_POST['tombol_update']))
                 }
                 if(isset($_GET['sort_by']))
                 {
+                  if($_GET['sort_by'] == 'id')
+                  { 
+                    $sql .= " ORDER BY a.id ".$_GET['order']."";
+                  }
                   if($_GET['sort_by'] == 'nama')
                   { 
                     $sql .= " ORDER BY a.nama ".$_GET['order']."";
-                  }     
+                  }  
+                  if($_GET['sort_by'] == 'username')
+                  { 
+                    $sql .= " ORDER BY a.username ".$_GET['order']."";
+                  } 
+                  if($_GET['sort_by'] == 'lokasi')
+                  { 
+                    $sql .= " ORDER BY b.lokasi ".$_GET['order']."";
+                  }  
+                  if($_GET['sort_by'] == 'departemen')
+                  { 
+                    $sql .= " ORDER BY c.departemen ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'jabatan')
+                  { 
+                    $sql .= " ORDER BY d.jabatan ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'aktif')
+                  { 
+                    $sql .= " ORDER BY a.aktif ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'created_at')
+                  { 
+                    $sql .= " ORDER BY a.created_at ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'updated_at')
+                  { 
+                    $sql .= " ORDER BY a.updated_at ".$_GET['order']."";
+                  }
                 }
                 else
                 {
@@ -366,7 +417,7 @@ if(isset($_POST['tombol_update']))
                 {
                   $sort_by='&sort_by='.$_GET['sort_by'].'&order='.$_GET['order'];
                 }
-                $reload = $_SERVER['PHP_SELF'] . "?daftar".$sort_by;
+                $reload = $_SERVER['PHP_SELF'] . "?id_nav_detail=".$id_nav_detail."&daftar".$sort_by;
                 if($total == 0)
                 {
                 ?>
@@ -383,16 +434,16 @@ if(isset($_POST['tombol_update']))
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>ID</th>
+                    <th>ID <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=id&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='id' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=id&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Nama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='nama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=nama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
-                    <th>Username</th>
+                    <th>Username <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=username&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='username' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=username&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Password</th>
-                    <th>Lokasi</th>
-                    <th>Departemen</th>
-                    <th>Jabatan</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>Lokasi <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=lokasi&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='lokasi' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=lokasi&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Departemen <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=departemen&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='departemen' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=departemen&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Jabatan <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=jabatan&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='jabatan' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=jabatan&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Status <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=aktif&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=aktif&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Created At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=created_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=created_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Updated At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=updated_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&sort_by=updated_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th colspan="3"></th>
                   </tr>
                 </thead>
@@ -423,9 +474,9 @@ if(isset($_POST['tombol_update']))
                     <td><span class=" label label-<?php echo $label; ?>"><?php echo $status; ?></span></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['created_at'])); ?></td>
                     <td><?php echo date('d-M-Y h:i:s',strtotime($row['updated_at'])); ?></td>
-                    <td><a class="fa fa-lg fa-folder-open-o" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&detail&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-edit" style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&ubah&id=<?php echo $row['id']; ?>"></a></td>
-                    <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:black;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&hapus&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-folder-open" style="cursor: pointer;color:orange;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-pencil" style="cursor: pointer;color:darkblue;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&ubah&id=<?php echo $row['id']; ?>"></a></td>
+                    <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:red;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&hapus&id=<?php echo $row['id']; ?>"></a></td>
                   </tr>
                   <?php
                   }
@@ -643,6 +694,7 @@ if(isset($_POST['tombol_update']))
             <div class="box-footer">
               <input type="hidden" name="id" value="<?php echo $id; ?>">
               <button type="submit" name="tombol_update" class="btn btn-flat btn-sm btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
+              <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>" class="btn btn-flat btn-sm btn-danger"><i class="fa fa-sm fa-reply"></i> Kembali</a>
             </div>
           </form>
         </div>
@@ -786,7 +838,7 @@ if(isset($_POST['tombol_update']))
               <div class="row">
                 <div class="col-md-2">
                   <button type="submit" name="tombol_tambah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>
@@ -957,7 +1009,7 @@ if(isset($_POST['tombol_update']))
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
                   <button type="submit" name="tombol_ubah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>
@@ -1021,7 +1073,7 @@ if(isset($_POST['tombol_update']))
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
                   <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
               </div>
             </div>

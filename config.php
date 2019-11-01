@@ -1,9 +1,10 @@
 <?php
 session_start();
+include '../gb_config.php';
 //error_reporting(E_ALL & ~E_NOTICE);
 $kode_perusahaan = 'KJM';
 $perusahaan = 'PT. Karo Jaya Makmur';
-$db = mysqli_connect("localhost", "root", "",$kode_perusahaan);
+$db = mysqli_connect($gb_server,$gb_username,$gb_password,$kode_perusahaan);
 date_default_timezone_set("Asia/Jakarta");
 $tgl_sekarang = date('Y-m-d');
 $today = date_parse($tgl_sekarang);

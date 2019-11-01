@@ -13,6 +13,10 @@ if(isset($_GET['id_nav_detail']))
     navigasi_ke('index.php');
   }
 }
+if(isset($_GET['page']))
+{
+  $page = fch($_GET['page']);
+}
 
 /*if($_SESSION['logged_time'])
 {

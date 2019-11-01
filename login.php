@@ -50,11 +50,11 @@ if(isset($_POST['tombol_login']))
       <p class="login-box-msg">Silakan memulai sesi anda</p>
       <form action="" method="post">
         <div class="form-group has-feedback">
-          <input autofocus type="text" name="username" class="form-control" autocomplete="off" placeholder="Username">
+          <input autofocus type="text" name="username" class="form-control" autocomplete="off" placeholder="Username" required>
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" name="password" class="form-control" autocomplete="off" placeholder="Password">
+          <input type="password" name="password" class="form-control" autocomplete="off" placeholder="Password" required>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <?php 
