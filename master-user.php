@@ -46,7 +46,7 @@ if(isset($_POST['tombol_tambah']))
     '".$aktif."',
     '".$id_user."',
     NOW(),
-    null
+    NOW()
   )";
   mysqli_query($db,$sql) OR die('error 51');
   $id = mysqli_insert_id($db); 
@@ -61,7 +61,7 @@ if(isset($_POST['tombol_tambah']))
     'insert',
     '".$id_user."',      
     NOW(),
-    null
+    NOW()
   )";
   mysqli_query($db,$sql) OR die('error 66');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
@@ -100,7 +100,7 @@ if(isset($_POST['tombol_ubah']))
     'update',
     '".$id_user."',      
     NOW(),
-    null
+    NOW()
   )";
   mysqli_query($db,$sql) OR die('error 104');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_ubah');
@@ -108,12 +108,47 @@ if(isset($_POST['tombol_ubah']))
 if(isset($_POST['tombol_hapus']))
 {
   $id = fch($_POST['id']);
+  $sql=
+  "SELECT
+    *
+  FROM
+    tb_master_user_detail AS a
+  WHERE
+    a.id = '".$id."'";
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 118'));
+  if(mysqli_num_rows($res) != 0)
+  {
+    while($row = mysqli_fetch_assoc($res))
+    {
+      $id_detail = $row['id_detail'];
+      $sql2 =
+      "DELETE FROM
+        tb_master_user_detail
+      WHERE
+        id_detail = '".$row['id_detail']."'";
+      mysqli_query($db,$sql2) OR die(alert_php('error 129'));
+      $sql2 =
+      "INSERT INTO
+        tb_log
+      VALUES
+      (
+        default,
+        'tb_master_user_detail',
+        '".$id_detail."',
+        'delete',
+        '".$id_user."',      
+        NOW(),
+        NOW()
+      )";
+      mysqli_query($db,$sql2) OR die(alert_php('error 230'));
+    }
+  }
   $sql =
   "DELETE FROM
     tb_master_user
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 115');
+  mysqli_query($db,$sql) OR die(alert_php('error 151'));
   $sql =
   "INSERT INTO
     tb_log
@@ -125,9 +160,9 @@ if(isset($_POST['tombol_hapus']))
     'delete',
     '".$id_user."',      
     NOW(),
-    null
+    NOW()
   )";
-  mysqli_query($db,$sql) OR die('error 129');
+  mysqli_query($db,$sql) OR die(alert_php('error 165'));
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus');
 }
 if(isset($_POST['tombol_update']))
@@ -170,7 +205,7 @@ if(isset($_POST['tombol_update']))
         '".$id_navigasi_detail."',
         1,
         NOW(),
-        null
+        NOW()
       )";
       mysqli_query($db,$sql) OR die('error 174');
       $id_detail = mysqli_insert_id($db);
@@ -185,7 +220,7 @@ if(isset($_POST['tombol_update']))
         'insert',
         '".$id_user."',      
         NOW(),
-        null
+        NOW()
       )";
       mysqli_query($db,$sql) OR die('error 189');
     }
@@ -473,8 +508,8 @@ if(isset($_POST['tombol_update']))
                     <td><?php echo $row['departemen']; ?></td>
                     <td><?php echo $row['jabatan']; ?></td>
                     <td><span class=" label label-<?php echo $label; ?>"><?php echo $status; ?></span></td>
-                    <td><?php echo date('d-M-Y h:i:s',strtotime($row['created_at'])); ?></td>
-                    <td><?php echo date('d-M-Y h:i:s',strtotime($row['updated_at'])); ?></td>
+                    <td><?php echo date('d-M-Y H:i:s',strtotime($row['created_at'])); ?></td>
+                    <td><?php echo date('d-M-Y H:i:s',strtotime($row['updated_at'])); ?></td>
                     <td><a class="fa fa-lg fa-folder-open" style="cursor: pointer;color:orange;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $row['id']; ?>"></a></td>
                     <td><a class="fa fa-lg fa-pencil" style="cursor: pointer;color:darkblue;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&ubah&id=<?php echo $row['id']; ?>"></a></td>
                     <td><a class="fa fa-lg fa-trash-o " style="cursor: pointer;color:red;text-decoration: none;" href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&hapus&id=<?php echo $row['id']; ?>"></a></td>
