@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 01, 2019 at 10:09 AM
+-- Generation Time: Nov 02, 2019 at 07:51 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.27
 
@@ -1455,7 +1455,39 @@ INSERT INTO `tb_log` (`id`, `tabel`, `id_tabel`, `aksi`, `id_user`, `created_at`
 (1452, 'tb_master_navigasi', 5, 'update', 1, '2019-11-01 15:42:33', NULL),
 (1453, 'tb_master_navigasi', 5, 'update', 1, '2019-11-01 15:44:05', NULL),
 (1454, 'tb_master_navigasi', 5, 'update', 1, '2019-11-01 15:44:43', NULL),
-(1455, 'tb_master_navigasi', 8, 'update', 1, '2019-11-01 16:08:58', NULL);
+(1455, 'tb_master_navigasi', 8, 'update', 1, '2019-11-01 16:08:58', NULL),
+(1456, 'tb_master_navigasi', 7, 'update', 1, '2019-11-02 09:19:32', NULL),
+(1457, 'tb_master_navigasi', 9, 'update', 1, '2019-11-02 09:21:51', NULL),
+(1458, 'tb_master_navigasi', 9, 'update', 1, '2019-11-02 09:23:15', NULL),
+(1459, 'tb_master_navigasi', 8, 'update', 1, '2019-11-02 09:25:59', NULL),
+(1460, 'tb_master_navigasi', 10, 'insert', 1, '2019-11-02 09:35:11', '2019-11-02 09:35:11'),
+(1461, 'tb_master_navigasi', 11, 'insert', 1, '2019-11-02 09:36:12', '2019-11-02 09:36:12'),
+(1462, 'tb_master_navigasi', 12, 'insert', 1, '2019-11-02 09:37:35', '2019-11-02 09:37:35'),
+(1463, 'tb_master_navigasi', 13, 'insert', 1, '2019-11-02 09:40:37', '2019-11-02 09:40:37'),
+(1464, 'tb_master_navigasi', 7, 'update', 1, '2019-11-02 10:16:14', '2019-11-02 10:16:14'),
+(1465, 'tb_master_navigasi', 8, 'delete', 1, '2019-11-02 10:34:50', '2019-11-02 10:34:50'),
+(1466, 'tb_master_navigasi', 12, 'delete', 1, '2019-11-02 10:35:31', '2019-11-02 10:35:31'),
+(1467, 'tb_master_navigasi', 11, 'delete', 1, '2019-11-02 11:17:41', '2019-11-02 11:17:41'),
+(1468, 'tb_master_navigasi_detail', 7, 'insert', 1, '2019-11-02 11:29:07', NULL),
+(1469, 'tb_master_navigasi_detail', 8, 'insert', 1, '2019-11-02 11:35:33', NULL),
+(1470, 'tb_master_navigasi_detail', 9, 'insert', 1, '2019-11-02 11:41:55', NULL),
+(1471, 'tb_master_navigasi_detail', 10, 'insert', 1, '2019-11-02 11:47:34', NULL),
+(1472, 'tb_master_navigasi_detail', 11, 'insert', 1, '2019-11-02 11:59:00', NULL),
+(1473, 'tb_master_navigasi_detail', 12, 'insert', 1, '2019-11-02 12:56:48', '2019-11-02 12:56:48'),
+(1474, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:56:59', '2019-11-02 12:56:59'),
+(1475, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:57:15', '2019-11-02 12:57:15'),
+(1476, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:57:38', '2019-11-02 12:57:38'),
+(1477, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:57:48', '2019-11-02 12:57:48'),
+(1478, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:58:13', '2019-11-02 12:58:13'),
+(1479, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 12:59:55', '2019-11-02 12:59:55'),
+(1480, 'tb_master_navigasi_detail', 12, 'update', 1, '2019-11-02 13:13:26', '2019-11-02 13:13:26'),
+(1481, 'tb_master_navigasi_detail', 12, 'delete', 1, '2019-11-02 13:14:06', '2019-11-02 13:14:06'),
+(1482, 'tb_master_navigasi_detail', 13, 'insert', 1, '2019-11-02 13:33:35', '2019-11-02 13:33:35'),
+(1483, 'tb_master_navigasi_detail', 13, 'update', 1, '2019-11-02 13:33:45', '2019-11-02 13:33:45'),
+(1484, 'tb_master_navigasi_detail', 13, 'delete', 1, '2019-11-02 13:39:22', '2019-11-02 13:39:22'),
+(1485, 'tb_master_navigasi_detail', 14, 'insert', 1, '2019-11-02 13:48:37', '2019-11-02 13:48:37'),
+(1486, 'tb_master_navigasi_detail', 14, 'delete', 1, '2019-11-02 13:49:12', '2019-11-02 13:49:12'),
+(1487, 'tb_master_navigasi', 13, 'delete', 1, '2019-11-02 13:49:12', '2019-11-02 13:49:12');
 
 -- --------------------------------------------------------
 
@@ -7298,9 +7330,9 @@ INSERT INTO `tb_master_navigasi` (`id`, `nama`, `posisi`, `ikon`, `aktif`, `id_u
 (4, 'Pembukuan', 4, 'fa-book', 1, 1, '2019-11-01 11:12:49', '2019-11-01 11:12:49'),
 (5, 'Logistik', 5, 'fa-amazon', 0, 1, '2019-11-01 15:47:14', '2019-11-01 15:48:07'),
 (6, 'Jurnal', 6, 'fa-archive', 1, 1, '2019-11-01 15:01:27', '2019-11-01 15:01:27'),
-(7, 'test', 7, 'fa-500px', 1, 1, '2019-11-01 15:02:23', '2019-11-01 15:02:23'),
-(8, 'test234', 8, 'fa-archive', 0, 1, '2019-11-01 15:03:10', '2019-11-01 16:08:58'),
-(9, 'testst', 9, 'fa-align-center', 1, 1, '2019-11-01 15:19:28', '2019-11-01 15:19:28');
+(7, '123', 7, 'fa-area-chart', 0, 1, '2019-11-01 15:02:23', '2019-11-02 10:16:14'),
+(9, 'testst363', 9, 'fa-arrow-circle-o-left', 0, 1, '2019-11-01 15:19:28', '2019-11-02 09:23:15'),
+(10, 'sdfs f', 10, 'fa-angle-double-up', 1, 1, '2019-11-02 09:35:11', '2019-11-02 09:35:11');
 
 -- --------------------------------------------------------
 
@@ -7334,7 +7366,12 @@ INSERT INTO `tb_master_navigasi_detail` (`id_detail`, `id`, `kode`, `nomor`, `na
 (3, 2, '', '', 'Pemesanan Barang', 'pemesanan.php', '&refresh&daftar', 2, 'fa-asterisk', 1, 1, '2019-11-01 11:20:18', '0000-00-00 00:00:00'),
 (4, 2, '', '', 'Pembelian Barang', 'pembelian.php', '&refresh&daftar', 3, 'fa-asterisk', 1, 1, '2019-11-01 11:20:19', '0000-00-00 00:00:00'),
 (5, 1, '', '', 'User', 'master-user.php', '&refresh&daftar', 1, 'fa-asterisk', 1, 1, '2019-11-01 11:20:21', '0000-00-00 00:00:00'),
-(6, 2, '-', '-', 'Pengiriman Barang', 'pengiriman.php', '&refresh&daftar', 4, 'fa-book', 1, 1, '2019-11-01 12:37:50', '2019-11-01 12:37:50');
+(6, 2, '-', '-', 'Pengiriman Barang', 'pengiriman.php', '&refresh&daftar', 4, 'fa-book', 1, 1, '2019-11-01 12:37:50', '2019-11-01 12:37:50'),
+(7, 1, '-', '-', 'Barang', 'master-barang.php', '&refresh&daftar', 5, 'fa-database', 1, 1, '2019-11-02 11:29:07', '2019-11-02 11:29:07'),
+(8, 1, '-', '-', 'Pemasok', 'master-pemasok.php', '&refresh&daftar', 6, 'fa-industry', 1, 1, '2019-11-02 11:35:33', '2019-11-02 11:35:33'),
+(9, 1, '-', '-', 'Lokasi', 'master-lokasi.php', '&refresh&daftar', 7, 'fa-location-arrow', 1, 1, '2019-11-02 11:41:55', '2019-11-02 11:41:55'),
+(10, 1, '-', '-', 'Karyawan', 'master-karyawan.php', '&refresh&daftar', 8, 'fa-group', 1, 1, '2019-11-02 11:47:34', '2019-11-02 11:47:34'),
+(11, 1, '-', '-', 'Pelanggan', 'master-pelanggan.php', '&refresh&daftar', 9, 'fa-bold', 1, 1, '2019-11-02 11:59:00', '2019-11-02 11:59:00');
 
 -- --------------------------------------------------------
 
@@ -21274,7 +21311,7 @@ ALTER TABLE `tb_kas_old`
 -- AUTO_INCREMENT for table `tb_log`
 --
 ALTER TABLE `tb_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1456;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1488;
 
 --
 -- AUTO_INCREMENT for table `tb_master_akun_pembukuan`
@@ -21334,13 +21371,13 @@ ALTER TABLE `tb_master_lokasi`
 -- AUTO_INCREMENT for table `tb_master_navigasi`
 --
 ALTER TABLE `tb_master_navigasi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tb_master_navigasi_detail`
 --
 ALTER TABLE `tb_master_navigasi_detail`
-  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_detail` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tb_master_navigasi_detail_old`
