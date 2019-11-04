@@ -80,7 +80,7 @@
                   <li class="nav-item">
                     <a class="hovered" href="<?php echo $row['file']; ?>?id_nav_detail=<?php echo $row['id_detail']; ?><?php echo $row['postfix']; ?>" style="color:black;">
                       <i class="fa <?php echo $row['ikon']; ?>" aria-hidden="true"></i>
-                      <span><?php echo $row['nomor']; ?> - <?php echo $row['nama']; ?></span>
+                      <span> - <?php echo $row['nama']; ?></span>
                     </a>
                   </li>
                   <?php 
