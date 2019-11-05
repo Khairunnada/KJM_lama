@@ -11,7 +11,8 @@ if(isset($_GET['id_nav_detail']))
   $sql =
   "SELECT
     b.id,
-    b.nama
+    a.nama as nav_detail,
+    b.nama as nav
   FROM
     tb_master_navigasi_detail AS a
   JOIN
@@ -24,7 +25,8 @@ if(isset($_GET['id_nav_detail']))
     while($row = mysqli_fetch_assoc($res))
     {
       $id_nav = $row['id'];
-      $nav = $row['nama'];
+      $nav = $row['nav'];
+      $nav_detail = $row['nav_detail'];
     }    
   }
   if(cek_page_avail($id_user,$id_nav_detail) == 0)
