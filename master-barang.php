@@ -19,52 +19,79 @@ if(isset($_GET['excel']))
 if(isset($_POST['tombol_tambah']))
 {
   unset($_SESSION['tombol_filter_'.$id_nav_detail]);  
-  $nama = fch($_POST['nama']);
-  $ikon = fch($_POST['ikon']);
-  $aktif = fch($_POST['aktif']);
-  $sql =
-  "SELECT
-    a.posisi
-  FROM
-    tb_master_barang AS a";
-  $sql .= " ORDER BY a.posisi DESC LIMIT 1";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 31'));
-  if(mysqli_num_rows($res) != 0)
-  {
-    while($row = mysqli_fetch_assoc($res))
-    {
-      $posisi = $row['posisi'] + 1;
-    }
-  }  
+  $prefix = fch($_POST['prefix']);
+  $counter = fch($_POST['counter']);
+  $barang = fch($_POST['barang']);
+  $satuan = fch($_POST['satuan']);
+  $pembagi = fch($_POST['pembagi']);
+  $minimum_stok = fch($_POST['minimum_stok']);
+  $lead_time = fch($_POST['lead_time']);
+  $reorder_qty = fch($_POST['reorder_qty']);
+  $golongan = fch($_POST['golongan']);
+  $id_akun_aktiva = fch($_POST['id_akun_aktiva']);
+  $id_akun_beban_penyusutan_aktiva = fch($_POST['id_akun_beban_penyusutan_aktiva']);
+  $id_kelompok_aktiva = fch($_POST['id_kelompok_aktiva']);
+  $aktif = fch($_POST['aktif']);  
+  $kode = $prefix.$counter;
   $sql =
   "SELECT
     a.id
   FROM
     tb_master_barang as a
   WHERE
-    a.nama = '".$nama."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 47'));
+    a.kode = '".$kode."'";
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 43'));
   if(mysqli_num_rows($res) != 0)
   {
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$nama);
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$kode);
   }
   else
   {
+    $sql = 
+    "SELECT
+      *
+    FROM
+      tb_master_prefix";
     $sql = 
     "INSERT INTO
       tb_master_barang
     VALUES
     (
       default,
-      '".$nama."',
-      '".$posisi."',
-      '".$ikon."',
+      '".$kode."',
+      '".$barang."',
+      '".$satuan."',
+      '',
+      '".$id_grup."',
+      '',
+      '".$id_level_1."',
+      '',
+      '".$id_level_2."',
+      '',
+      '".$id_golongan."',
+      '',
+      '".$faktor."',
+      '".$minimum_stok."',
+      '".$lead_time."',
+      '".$reorder_qty."',
+      '".$pembagi."',
+      0,
+      '".$id_akun_pembukuan."',
+      '',
+      0,
+      '".$id_tipe_aktiva."',
+      '".$id_kelompok_aktiva."',
+      '".$id_akun_akumulasi_penyusutan."',
+      '',
+      '".$id_akun_beban_penyusutan."',
+      '',
+      '".$catatan."',
       '".$aktif."',
       '".$id_user."',
       NOW(),
       NOW()
     )"; 
-    mysqli_query($db,$sql) OR die(alert_php('error 68'));  
+    mysqli_query($db,$sql) OR die(alert_php('error 89'));  
     $id = mysqli_insert_id($db); 
     $sql =
     "INSERT INTO
@@ -79,9 +106,9 @@ if(isset($_POST['tombol_tambah']))
       NOW(),
       NOW()
     )";
-    mysqli_query($db,$sql) OR die(alert_php('error 83'));
+    mysqli_query($db,$sql) OR die(alert_php('error 104'));
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
-  }  
+  }
 }
 if(isset($_POST['tombol_tambah_detail']))
 {
@@ -1400,28 +1427,30 @@ function cekKodeTerakhir(prefix) {
                     </select>
                   </div>
                 </div>
+              </div>
+              <div class="row">
                 <div class="col-md-1">
                   <div class="form-group">
                     <label for="pembagi">Pembagi :</label>
-                    <input type="text" name="pembagi" id="pembagi" class="form-control" autocomplete="off" required>
+                    <input type="text" name="pembagi" id="pembagi" class="form-control" autocomplete="off" value="1" required>
                   </div>
                 </div>
                 <div class="col-md-1">
                   <div class="form-group">
                     <label for="minimum_stok">Min Stok :</label>
-                    <input type="text" name="minimum_stok" id="minimum_stok" class="form-control" autocomplete="off" required>
+                    <input type="text" name="minimum_stok" id="minimum_stok" class="form-control" autocomplete="off" value="4" required>
                   </div>
                 </div>
                 <div class="col-md-1">
                   <div class="form-group">
                     <label for="lead_time">Lead Time :</label>
-                    <input type="text" name="lead_time" id="lead_time" class="form-control" autocomplete="off" required>
+                    <input type="text" name="lead_time" id="lead_time" class="form-control" autocomplete="off" value="2" required>
                   </div>
                 </div>
                 <div class="col-md-1">
                   <div class="form-group">
                     <label for="reorder_qty">Reorder Qty :</label>
-                    <input type="text" name="reorder_qty" id="reorder_qty" class="form-control" autocomplete="off" required>
+                    <input type="text" name="reorder_qty" id="reorder_qty" class="form-control" autocomplete="off" value="4" required>
                   </div>
                 </div>
               </div>
@@ -1653,7 +1682,7 @@ function cekKodeTerakhir(prefix) {
       tb_master_barang AS a
     WHERE
       a.id = '".$id."'";
-    $res = mysqli_query($db,$sql) OR die('error 957');
+    $res = mysqli_query($db,$sql) OR die('error 1656');
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))

@@ -1,0 +1,55 @@
+1. chmod +x xampp-linux-x64-5.6.30-1-installer.run
+2. ./xampp-linux-x64-5.6.30-1-installer.run
+
+membuat launcher xampp
+1. sudo nano /usr/share/polkit-1/actions/xampp.policy
+2. copy paste -> 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+
+  <action id="org.freedesktop.policykit.pkexec.run-xampp">
+    <description>Run the Xampp Control Panel</description>
+    <message>Authentication is required to run the Xampp Control Panel</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/opt/lampp/manager-linux-x64.run</annotate>
+    <annotate key="org.freedesktop.policykit.exec.allow_gui">TRUE</annotate>
+  </action>
+</policyconfig>
+
+3. sudo nano /usr/share/applications/xampp-control-panel.desktop
+4. copy paste ->
+    
+    [Desktop Entry]
+Encoding=UTF-8
+Name=XAMPP Control Panel
+Comment=Start and Stop XAMPP
+Exec=pkexec /opt/lampp/manager-linux-x64.run
+Icon=/opt/lampp/htdocs/favicon.ico
+Categories=Application
+Type=Application
+Terminal=false
+
+buat xampp startup
+1. sudo nano /etc/systemd/system/xampp.service
+2. copy paste ->
+    
+    [Unit]
+Description=XAMPP
+
+[Service]
+ExecStart=/opt/lampp/lampp start
+ExecStop=/opt/lampp/lampp stop
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
+
+3. systemctl enable --now /etc/systemd/system/xampp.service
