@@ -105,9 +105,9 @@ if(isset($_POST['tombol_tambah']))
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
   }  
 }
-
 if(isset($_POST['tombol_ubah']))
 {
+  //Update hapus 
   $id = fch($_POST['id']);
   $hapus = fch($_POST['hapus']);
   $sql =
@@ -134,9 +134,6 @@ if(isset($_POST['tombol_ubah']))
     WHERE
       a.id = '".$id."'";
     
-    
-
-
     mysqli_query($db,$sql) OR die(alert_php('163'));
     $sql =
     "INSERT INTO
@@ -154,10 +151,9 @@ if(isset($_POST['tombol_ubah']))
     mysqli_query($db,$sql) OR die(alert_php('177'));
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah');
   }  
-}
+  //Update hapus
 
-if(isset($_POST['tombol_ubah']))
-{
+  //Insert hasil update
   unset($_SESSION['tombol_filter_'.$id_nav_detail]);  
   $pemasok = fch($_POST['pemasok']);
   $alamat = fch($_POST['alamat']);
@@ -231,6 +227,7 @@ if(isset($_POST['tombol_ubah']))
     mysqli_query($db,$sql) OR die(alert_php('error 83'));
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
   }  
+  //Insert hasil update
 }
 
 
