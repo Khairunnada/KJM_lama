@@ -230,6 +230,7 @@ if(isset($_POST['tombol_hapus']))
       mysqli_query($db,$sql2) OR die(alert_php('error 231'));
     }
   }
+  
   $sql =
   "DELETE FROM
     tb_master_pemasok
