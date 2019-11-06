@@ -3,9 +3,20 @@
 if(isset($_GET['refresh']))
 {
   unset($_SESSION['tombol_filter_'.$id_nav_detail]);
-  unset($_SESSION['kode_'.$id_nav_detail]);
-  unset($_SESSION['barang_'.$id_nav_detail]);
-  unset($_SESSION['satuan_'.$id_nav_detail]);
+  unset($_SESSION['pemasok_'.$id_nav_detail]);
+  unset($_SESSION['alamat_'.$id_nav_detail]);
+  unset($_SESSION['kota_'.$id_nav_detail]);
+  unset($_SESSION['telp_'.$id_nav_detail]);
+  unset($_SESSION['fax_'.$id_nav_detail]);
+  unset($_SESSION['email_'.$id_nav_detail]);
+  unset($_SESSION['cp_'.$id_nav_detail]);
+  unset($_SESSION['catatan_'.$id_nav_detail]);
+  unset($_SESSION['ppn_'.$id_nav_detail]);
+  unset($_SESSION['pph_'.$id_nav_detail]);
+  unset($_SESSION['mata_uang_'.$id_nav_detail]);
+  unset($_SESSION['nama_bank_'.$id_nav_detail]);
+  unset($_SESSION['atas_nama_'.$id_nav_detail]);
+  unset($_SESSION['no_rekening_'.$id_nav_detail]);
   unset($_SESSION['aktif_'.$id_nav_detail]);
   unset($_SESSION['data_per_halaman_'.$id_nav_detail]);
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
@@ -36,9 +47,6 @@ if(isset($_POST['tombol_tambah']))
   $atas_nama = fch($_POST['atas_nama']);
   $no_rekening = fch($_POST['no_rekening']);
   $aktif = fch($_POST['aktif']);
-  $created_at = fch($_POST['created_at']);
-  $updated_at = fch($_POST['updated_at']);
-  
   $sql =
   "SELECT
     a.id
@@ -74,8 +82,6 @@ if(isset($_POST['tombol_tambah']))
       '".$atas_nama."',
       '".$no_rekening."',
       '".$aktif."',
-      '".$created_at."',
-      '".$updated_at."',
       NOW(),
       NOW()
     )"; 
@@ -90,7 +96,7 @@ if(isset($_POST['tombol_tambah']))
       'tb_master_pemasok',
       '".$id."',
       'insert',
-      '".$pemasok."',      
+      '".$id_user."',      
       NOW(),
       NOW()
     )";
@@ -116,10 +122,7 @@ if(isset($_POST['tombol_ubah']))
   $nama_bank = fch($_POST['nama_bank']);
   $atas_nama = fch($_POST['atas_nama']);
   $no_rekening = fch($_POST['no_rekening']);
-  $aktif = fch($_POST['aktif']);  
-  $created_at = fch($_POST['created_at']);
-  $updated_at = fch($_POST['updated_at']);
-  
+  $aktif = fch($_POST['aktif']);
   $sql =
   "SELECT
     *
@@ -154,7 +157,6 @@ if(isset($_POST['tombol_ubah']))
       a.atas_nama = '".$atas_nama."',
       a.no_rekening = '".$no_rekening."',
       a.aktif = '".$aktif."',
-      a.created_at = '".$created_at."',
       a.updated_at = NOW()
     WHERE
       a.id = '".$id."'";
@@ -168,7 +170,7 @@ if(isset($_POST['tombol_ubah']))
       'tb_master_pemasok',
       '".$id."',
       'update',
-      '".$pemasok."',      
+      '".$id_user."',      
       NOW(),
       NOW()
     )";
@@ -180,59 +182,6 @@ if(isset($_POST['tombol_hapus']))
 {
   $id = fch($_POST['id']);
   $pemasok = fch($_POST['pemasok']);
-  $alamat = fch($_POST['alamat']);
-  $kota = fch($_POST['kota']);
-  $telp = fch($_POST['telp']);
-  $fax = fch($_POST['fax']);
-  $email = fch($_POST['email']);
-  $cp = fch($_POST['cp']);
-  $catatan = fch($_POST['catatan']);
-  $ppn = fch($_POST['ppn']);
-  $pph = fch($_POST['pph']);
-  $mata_uang = fch($_POST['mata_uang']);
-  $nama_bank = fch($_POST['nama_bank']);
-  $atas_nama = fch($_POST['atas_nama']);
-  $no_rekening = fch($_POST['no_rekening']);
-  $aktif = fch($_POST['aktif']); 
-  $created_at = fch($_POST['created_at']);
-  $updated_at = fch($_POST['updated_at']);
-  
-  $sql=
-  "SELECT
-    *
-  FROM
-    tb_master_pemasok_detail AS a
-  WHERE
-    a.id = '".$id."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 206'));
-  if(mysqli_num_rows($res) != 0)
-  {
-    while($row = mysqli_fetch_assoc($res))
-    {
-      $id = $row['id'];
-      $sql2 =
-      "DELETE FROM
-        tb_master_pemasok_detail
-      WHERE
-        id = '".$row['id']."'";
-      mysqli_query($db,$sql2) OR die(alert_php('error 217'));
-      $sql2 =
-      "INSERT INTO
-        tb_log
-      VALUES
-      (
-        default,
-        'tb_master_pemasok_detail',
-        '".$id_detail."',
-        'delete',
-        '".$pemasok."',      
-        NOW(),
-        NOW()
-      )";
-      mysqli_query($db,$sql2) OR die(alert_php('error 231'));
-    }
-  }
-  
   $sql =
   "DELETE FROM
     tb_master_pemasok
@@ -248,7 +197,7 @@ if(isset($_POST['tombol_hapus']))
     'tb_master_pemasok',
     '".$id."',
     'delete',
-    '".$pemasok."',      
+    '".$id_user."',    
     NOW(),
     NOW()
   )";
@@ -278,9 +227,9 @@ if(isset($_POST['tombol_hapus']))
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="?id=<?php echo $id; ?>&tambah"><i class="fa fa-sm fa-file-o"></i>Tambah</a></li>
+                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&tambah"><i class="fa fa-sm fa-file-o"></i>Tambah</a></li>
                   <li><a data-toggle="modal" href="#ModalFilter"><i class="fa fa-sm fa-search"></i> Filter</a></li>
-                  <li><a href="?id=<?php echo $id; ?>&refresh&daftar"><i class="fa fa-sm fa-refresh"></i>Refresh</a></li>
+                  <li><a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&refresh&daftar"><i class="fa fa-sm fa-refresh"></i>Refresh</a></li>
                 </ul>
               </div>
               <div class="btn-group">
@@ -312,7 +261,7 @@ if(isset($_POST['tombol_hapus']))
             ?>
             <div class="alert alert-danger" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:white;">Gagal Menambah; Pemasok <b><u><?php echo $_GET['gagal_tambah']; ?></u></b> Sudah Ada</div>
+              <div style="color:white;">Gagal Menambah Pemasok <b><u><?php echo $_GET['gagal_tambah']; ?></u></b> Sudah Ada</div>
             </div>
             <?php
             }
@@ -330,7 +279,7 @@ if(isset($_POST['tombol_hapus']))
             ?>
             <div class="alert alert-danger" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:white;">Gagal Mengubah; Pemasok <b><u><?php echo $_GET['gagal_ubah']; ?></u></b> Sudah Ada</div>
+              <div style="color:white;">Gagal Mengubah Pemasok <b><u><?php echo $_GET['gagal_ubah']; ?></u></b> Sudah Ada</div>
             </div>
             <?php
             }
@@ -349,6 +298,7 @@ if(isset($_POST['tombol_hapus']))
                 <?php
                 $sql =
                 "SELECT
+                  a.id,
                   a.pemasok ,
                   a.alamat ,
                   a.kota ,
@@ -368,27 +318,27 @@ if(isset($_POST['tombol_hapus']))
                   a.updated_at 
                 FROM
                   tb_master_pemasok AS a";
-                if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_'.$id]))
+                if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                 {
                   if(isset($_POST['tombol_filter']))
                   {
-                    navigasi_ke('?id='.$id.'&daftar');
+                    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
                     if($_POST['data_per_halaman'] == '') $_POST['data_per_halaman'] = 0;                  
                     $_SESSION['tombol_filter_'.$id_nav_detail] = $_POST['tombol_filter'];
                     $_SESSION['pemasok_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['alamat_)'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['kota_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['telp_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['fax_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['email_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['cp_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['catatan_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['ppn_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['pph_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['mata_uang_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['nama_bank_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['atas_nama_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['no_rekening_'.$id_nav_detail] = $_POST['pemasok'];
+                    $_SESSION['alamat_'.$id_nav_detail] = $_POST['alamat'];
+                    $_SESSION['kota_'.$id_nav_detail] = $_POST['kota'];
+                    $_SESSION['telp_'.$id_nav_detail] = $_POST['telp'];
+                    $_SESSION['fax_'.$id_nav_detail] = $_POST['fax'];
+                    $_SESSION['email_'.$id_nav_detail] = $_POST['email'];
+                    $_SESSION['cp_'.$id_nav_detail] = $_POST['cp'];
+                    $_SESSION['catatan_'.$id_nav_detail] = $_POST['catatan'];
+                    $_SESSION['ppn_'.$id_nav_detail] = $_POST['ppn'];
+                    $_SESSION['pph_'.$id_nav_detail] = $_POST['pph'];
+                    $_SESSION['mata_uang_'.$id_nav_detail] = $_POST['mata_uang'];
+                    $_SESSION['nama_bank_'.$id_nav_detail] = $_POST['nama_bank'];
+                    $_SESSION['atas_nama_'.$id_nav_detail] = $_POST['atas_nama'];
+                    $_SESSION['no_rekening_'.$id_nav_detail] = $_POST['no_rekening'];
                     $_SESSION['aktif_'.$id_nav_detail] = $_POST['aktif'];
                     $_SESSION['data_per_halaman_'.$id_nav_detail] = $_POST['data_per_halaman'];
                     
@@ -407,27 +357,26 @@ if(isset($_POST['tombol_hapus']))
                     $atas_nama = $_POST['atas_nama'];
                     $no_rekening = $_POST['no_rekening'];
                     $aktif = $_POST['aktif'];
-                    $created_at = $_POST['created_at'];
-                    $updated_at = $_POST['updated_at'];
                     $data_per_halaman = $_POST['data_per_halaman'];
                   }
                   else if(isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                   {
                     $tombol_filter = $_SESSION['tombol_filter_'.$id_nav_detail]; 
-                    $_SESSION['pemasok_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['alamat_)'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['kota_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['telp_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['fax_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['email_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['cp_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['catatan_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['ppn_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['pph_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['mata_uang_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['nama_bank_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['atas_nama_'.$id_nav_detail] = $_POST['pemasok'];
-                    $_SESSION['no_rekening_'.$id_nav_detail] = $_POST['pemasok'];
+                    $pemasok = $_SESSION['pemasok_'.$id_nav_detail];
+                    $alamat = $_SESSION['alamat_'.$id_nav_detail];
+                    $kota = $_SESSION['kota_'.$id_nav_detail];
+                    $telp = $_SESSION['telp_'.$id_nav_detail];
+                    $fax = $_SESSION['fax_'.$id_nav_detail];
+                    $email = $_SESSION['email_'.$id_nav_detail];
+                    $cp = $_SESSION['cp_'.$id_nav_detail];
+                    $catatan = $_SESSION['catatan_'.$id_nav_detail];
+                    $ppn = $_SESSION['ppn_'.$id_nav_detail];
+                    $pph = $_SESSION['pph_'.$id_nav_detail];
+                    $mata_uang = $_SESSION['mata_uang_'.$id_nav_detail];
+                    $nama_bank = $_SESSION['nama_bank_'.$id_nav_detail];
+                    $atas_nama = $_SESSION['atas_nama_'.$id_nav_detail];
+                    $no_rekening = $_SESSION['no_rekening_'.$id_nav_detail];
+                    $aktif = $_SESSION['aktif_'.$id_nav_detail];
                     $data_per_halaman = $_SESSION['data_per_halaman_'.$id_nav_detail];
                   } 
                   $sql .= " WHERE a.pemasok LIKE '%".$pemasok."%'";
@@ -539,7 +488,7 @@ if(isset($_POST['tombol_hapus']))
                 {
                   $sort_by='&sort_by='.$_GET['sort_by'].'&order='.$_GET['order'];
                 }
-                $reload = $_SERVER['PHP_SELF'] . "?id=".$id."&page=".$page."&daftar".$sort_by;
+                $reload = $_SERVER['PHP_SELF'] . "?id_nav_detail=".$id_nav_detail."&page=".$page."&daftar".$sort_by;
                 if($total == 0)
                 {
                 ?>
@@ -639,29 +588,17 @@ if(isset($_POST['tombol_hapus']))
             <?php
             $sql=
             "SELECT
-              a.pemasok ,
-                  a.alamat ,
-                  a.kota ,
-                    a.telp ,
-              a.fax ,
-              a.email ,
-              a.cp ,
-              a.catatan ,
-              a.ppn ,
-              a.pph ,
-              a.mata_uang ,
-              a.nama_bank ,
-              a.atas_nama ,
-              a.no_rekening ,
-              a.aktif ,
-              a.created_at ,
-              a.updated_at 
+              a.tabel,
+              a.aksi,
+              a.id_tabel,              
+              b.nama,
+              a.created_at
             FROM
               tb_log AS a
             LEFT JOIN
               tb_master_user AS b ON (b.id = a.id_user)
             WHERE
-              a.tabel = 'tb_master_navigasi'"; 
+              a.tabel = 'tb_master_pemasok'"; 
             $sql.=" ORDER BY a.created_at DESC LIMIT 1";
             $res=mysqli_query($db,$sql) OR die('error 452');
             if(mysqli_num_rows($res)!=0)
@@ -682,7 +619,6 @@ if(isset($_POST['tombol_hapus']))
   <?php 
   } 
 //PAGE_DAFTAR
-
 
 
 //PAGE_TAMBAH
@@ -719,7 +655,7 @@ if(isset($_POST['tombol_hapus']))
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <label for="telepon">Telepon :</label>
+                    <label for="telp">Telepon :</label>
                     <input autofocus type="text" name="telp" id="telp" class="form-control" autocomplete="off" required>
                   </div>
                 </div>
@@ -783,9 +719,6 @@ if(isset($_POST['tombol_hapus']))
                     <input autofocus type="text" name="no_rekening" id="no_rekening" class="form-control" autocomplete="off" required>
                   </div>
                 </div>
-
-
-
                 <div class="col-md-2">
                   <div class="form-group">
                     <label for="aktif">Status :</label>
@@ -834,12 +767,9 @@ if(isset($_POST['tombol_hapus']))
       a.nama_bank ,
       a.atas_nama ,
       a.no_rekening ,
-      a.aktif ,
-      a.created_at ,
-      a.updated_at 
-      
+      a.aktif 
     FROM
-      tb_master_navigasi AS a
+      tb_master_pemasok AS a
     WHERE
       a.id = '".$id."'";
     $res = mysqli_query($db,$sql) OR die('error 957');
@@ -847,24 +777,21 @@ if(isset($_POST['tombol_hapus']))
     {
       while($row = mysqli_fetch_assoc($res))
       {
-        $id = fch($_POST['id']);
-        $pemasok = fch($_POST['pemasok']);
-        $alamat = fch($_POST['alamat']);
-        $kota = fch($_POST['kota']);
-        $telp = fch($_POST['telp']);
-        $fax = fch($_POST['fax']);
-        $email = fch($_POST['email']);
-        $cp = fch($_POST['cp']);
-        $catatan = fch($_POST['catatan']);
-        $ppn = fch($_POST['ppn']);
-        $pph = fch($_POST['pph']);
-        $mata_uang = fch($_POST['mata_uang']);
-        $nama_bank = fch($_POST['nama_bank']);
-        $atas_nama = fch($_POST['atas_nama']);
-        $no_rekening = fch($_POST['no_rekening']);
-        $aktif = fch($_POST['aktif']);  
-        $created_at = fch($_POST['created_at']);
-        $updated_at = fch($_POST['updated_at']);      
+        $pemasok = $row['pemasok'];
+        $alamat = $row['alamat'];
+        $kota = $row['kota'];
+        $telp = $row['telp'];
+        $fax = $row['fax'];
+        $email = $row['email'];
+        $cp = $row['cp'];
+        $catatan = $row['catatan'];
+        $ppn = $row['ppn'];
+        $pph = $row['pph'];
+        $mata_uang = $row['mata_uang'];
+        $nama_bank = $row['nama_bank'];
+        $atas_nama = $row['atas_nama'];
+        $no_rekening = $row['no_rekening'];
+        $aktif = $row['aktif'];
       }
     }
   ?>
@@ -911,7 +838,7 @@ if(isset($_POST['tombol_hapus']))
                 <div class="col-md-2">
                   <div class="form-group">
                     <label for="email">Email :</label>
-                    <input type="email" name="email" id="email" class="form-control" autocomplete="off" value="<?php echo $email; ?>" required>
+                    <input type="text" name="email" id="email" class="form-control" autocomplete="off" value="<?php echo $email; ?>" required>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -1059,9 +986,88 @@ if(isset($_POST['tombol_hapus']))
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Pemasok: </label>
-                  <input type="text" name="pemasok" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pemasok_'.$id_nav_detail])) echo $_SESSION['nama_'.$id_nav_detail]; ?>">
+                  <input type="text" name="pemasok" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pemasok_'.$id_nav_detail])) echo $_SESSION['pemasok_'.$id_nav_detail]; ?>">
                 </div>
               </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Alamat: </label>
+                  <input type="text" name="alamat" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['alamat_'.$id_nav_detail])) echo $_SESSION['alamat_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Kota: </label>
+                  <input type="text" name="kota" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['kota_'.$id_nav_detail])) echo $_SESSION['kota_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Telepon: </label>
+                  <input type="text" name="telp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['telp_'.$id_nav_detail])) echo $_SESSION['telp_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fax: </label>
+                  <input type="text" name="fax" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['fax_'.$id_nav_detail])) echo $_SESSION['fax_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Email: </label>
+                  <input type="text" name="email" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['email_'.$id_nav_detail])) echo $_SESSION['email_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>CP: </label>
+                  <input type="text" name="cp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['cp_'.$id_nav_detail])) echo $_SESSION['cp_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Catatan: </label>
+                  <input type="text" name="catatan" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['catatan_'.$id_nav_detail])) echo $_SESSION['catatan_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>PPN: </label>
+                  <input type="text" name="ppn" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['ppn_'.$id_nav_detail])) echo $_SESSION['ppn_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>PPH: </label>
+                  <input type="text" name="pph" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pph_'.$id_nav_detail])) echo $_SESSION['pph_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Mata Uang: </label>
+                  <input type="text" name="mata_uang" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['mata_uang_'.$id_nav_detail])) echo $_SESSION['mata_uang_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Nama Bank: </label>
+                  <input type="text" name="nama_bank" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['nama_bank_'.$id_nav_detail])) echo $_SESSION['nama_bank_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Atas Nama: </label>
+                  <input type="text" name="atas_nama" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['atas_nama_'.$id_nav_detail])) echo $_SESSION['atas_nama_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>No Rekening: </label>
+                  <input type="text" name="no_rekening" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['no_rekening_'.$id_nav_detail])) echo $_SESSION['no_rekening_'.$id_nav_detail]; ?>">
+                </div>
+              </div>
+
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Status : </label>
