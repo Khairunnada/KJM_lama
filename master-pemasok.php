@@ -2,11 +2,13 @@
 <?php
 if(isset($_GET['refresh']))
 {
-  unset($_SESSION['tombol_filter_'.$id]);
-  unset($_SESSION['nama_'.$id]);
-  unset($_SESSION['aktif_'.$id]);
-  unset($_SESSION['data_per_halaman_'.$id]);
-  navigasi_ke('?id='.$id.'&daftar');
+  unset($_SESSION['tombol_filter_'.$id_nav_detail]);
+  unset($_SESSION['kode_'.$id_nav_detail]);
+  unset($_SESSION['barang_'.$id_nav_detail]);
+  unset($_SESSION['satuan_'.$id_nav_detail]);
+  unset($_SESSION['aktif_'.$id_nav_detail]);
+  unset($_SESSION['data_per_halaman_'.$id_nav_detail]);
+  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar');
 }
 if(isset($_GET['pdf']))
 {
