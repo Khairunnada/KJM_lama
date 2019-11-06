@@ -16,8 +16,14 @@ if(mysqli_num_rows($res) != 0)
   {
     $kode = $row['kode'];
   }
+  $counter = preg_replace('/[[:alpha:]]/', '', $kode)+1;
 }
-echo preg_replace('/[[:alpha:]]/', '', $kode)+1;
+else
+{
+  $counter = 1;
+  
+} 
+echo str_pad($counter, 4, '0', STR_PAD_LEFT); 
 mysqli_close($db);
 
 ?>

@@ -255,7 +255,7 @@ if(isset($_POST['tombol_hapus']))
     NOW()
   )";
   mysqli_query($db,$sql) OR die(alert_php('error 230'));
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus='.$pemasok);
+  //navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus='.$pemasok);
 }
 
 ?>
