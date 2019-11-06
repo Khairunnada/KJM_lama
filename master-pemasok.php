@@ -959,7 +959,7 @@ if(isset($_POST['tombol_hapus']))
               <div class="row">
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
-                  <input type="hidden" name="nama" value="<?php echo $pemasok; ?>">
+                  <input type="hidden" name="pemasok" value="<?php echo $pemasok; ?>">
                   <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
                   <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
