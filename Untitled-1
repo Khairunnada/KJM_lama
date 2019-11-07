@@ -1,0 +1,130 @@
+if(isset($_POST['tombol_ubah']))
+{
+  $id = fch($_POST['id']);
+  $prefix = fch($_POST['prefix']);
+  $counter = fch($_POST['counter']);
+  $barang = fch($_POST['barang']);
+  $id_satuan = fch($_POST['id_satuan']);
+  $id_level_1 = fch($_POST['id_level_1']);
+  $id_level_2 = fch($_POST['id_level_2']);
+  $pembagi = fch($_POST['pembagi']);
+  $minimum_stok = fch($_POST['minimum_stok']);
+  $lead_time = fch($_POST['lead_time']);
+  $reorder_qty = fch($_POST['reorder_qty']);
+  $id_golongan = fch($_POST['id_golongan']);
+  $id_akun_pembukuan = fch($_POST['id_akun_pembukuan']);
+  $id_tipe_aktiva = fch($_POST['id_tipe_aktiva']);
+  $id_kelompok_aktiva = fch($_POST['id_kelompok_aktiva']);
+  $id_akun_akumulasi_penyusutan_aktiva = fch($_POST['id_akun_akumulasi_penyusutan_aktiva']);
+  $id_akun_beban_penyusutan_aktiva = fch($_POST['id_akun_beban_penyusutan_aktiva']);
+  $catatan = fch($_POST['catatan']);
+  $aktif = fch($_POST['aktif']);  
+  $faktor = 1;
+  $kode = $prefix.$counter;
+  $sql =
+  "SELECT
+    a.id
+  FROM
+    tb_master_barang as a
+  WHERE
+    (a.kode = '".$kode."' OR
+    a.barang = '".$barang."') AND
+    a.id <> '".$id."' AND
+    a.hapus = 0";
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 156'));
+  if(mysqli_num_rows($res) != 0)
+  {
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&gagal_ubah='.$kode.' - '.$barang);
+  }
+  else
+  {
+    $sql =
+    "SELECT
+      a.id
+    FROM
+      tb_master_barang_prefix AS a
+    WHERE
+      a.prefix = '".$prefix."'";
+    $res = mysqli_query($db,$sql) OR die(alert_php('error 156'));
+    if(mysqli_num_rows($res) != 0)
+    {
+      while($row = mysqli_fetch_assoc($res))
+      {
+        $id_grup = $row['id'];
+      }
+    }
+    $sql =
+    "UPDATE
+      tb_master_barang AS a
+    SET
+      a.hapus = 1,
+      a.updated_at = NOW()
+    WHERE
+      id = '".$id."'";  
+    mysqli_query($db,$sql) OR die(alert_php('error 157'));
+    $sql =
+    "INSERT INTO
+      tb_log
+    VALUES
+    (
+      default,
+      'tb_master_barang',
+      '".$id."',
+      'update',
+      '".$id_user."',      
+      NOW(),
+      NOW()
+    )";
+    mysqli_query($db,$sql) OR die(alert_php('error 171'));
+    $sql = 
+    "INSERT INTO
+      tb_master_barang
+    VALUES
+    (
+      default,
+      '".$kode."',
+      '".$barang."',
+      '".$id_satuan."',
+      '".$id_satuan."',
+      '".$id_grup."',
+      '".$id_level_1."',
+      '".$id_level_2."',
+      '".$id_golongan."',
+      '".$faktor."',
+      '".$minimum_stok."',
+      '".$lead_time."',
+      '".$reorder_qty."',
+      '".$pembagi."',
+      0,
+      '".$id_akun_pembukuan."',
+      0,
+      '".$id_tipe_aktiva."',
+      '".$id_kelompok_aktiva."',
+      '".$id_akun_akumulasi_penyusutan_aktiva."',
+      '".$id_akun_beban_penyusutan_aktiva."',
+      '".$catatan."',
+      '".$aktif."',
+      0,
+      '".$id_user."',
+      NOW(),
+      NOW()
+    )"; 
+    mysqli_query($db,$sql) OR die(alert_php('error 205'));  
+    $id = mysqli_insert_id($db); 
+    $sql =
+    "INSERT INTO
+      tb_log
+    VALUES
+    (
+      default,
+      'tb_master_barang',
+      '".$id."',
+      'update',
+      '".$id_user."',      
+      NOW(),
+      NOW()
+    )";
+    mysqli_query($db,$sql) OR die(alert_php('error 220'));
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah='.$kode.' - '.$barang);
+  }
+}
