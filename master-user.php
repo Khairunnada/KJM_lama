@@ -44,6 +44,7 @@ if(isset($_POST['tombol_tambah']))
     '".$id_departemen."',
     '".$id_jabatan."',
     '".$aktif."',
+    0,
     '".$id_user."',
     NOW(),
     NOW()
@@ -204,6 +205,8 @@ if(isset($_POST['tombol_update']))
         '".$id_navigasi."',
         '".$id_navigasi_detail."',
         1,
+        0,
+        '".$id_user."',
         NOW(),
         NOW()
       )";
