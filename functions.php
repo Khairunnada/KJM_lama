@@ -3,6 +3,26 @@
 $background_genap = 'background:#E0FFFF;';
 $background_ganjil = 'background:#FFFFFF;';
 
+function insertLog($tabel,$id,$aksi)
+{
+  $db = $GLOBALS["db"];
+  $id_user = $GLOBALS["id_user"];
+  $sql =
+  "INSERT INTO
+    tb_log
+  VALUES
+  (
+    default,
+    '".$tabel."',
+    '".$id."',
+    '".$aksi."',
+    '".$id_user."',      
+    NOW(),
+    NOW()
+  )";
+  mysqli_query($db,$sql) OR die(alert_php('error 22'));
+}
+
 function showLog($nama_table)
 {
   $db = $GLOBALS["db"];

@@ -60,26 +60,14 @@ if(isset($_POST['tombol_tambah']))
       '".$posisi."',
       '".$ikon."',
       '".$aktif."',
+      0,
       '".$id_user."',
       NOW(),
       NOW()
     )"; 
     mysqli_query($db,$sql) OR die(alert_php('error 68'));  
-    $id = mysqli_insert_id($db); 
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_navigasi',
-      '".$id."',
-      'insert',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('error 83'));
+    $id = mysqli_insert_id($db);
+    insertLog($tb_utama,$id,'insert'); 
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
   }  
 }
@@ -92,6 +80,8 @@ if(isset($_POST['tombol_tambah_detail']))
   $file = fch($_POST['file']);
   $postfix = fch($_POST['postfix']);
   $ikon = fch($_POST['ikon']);
+  $tabel_utama = fch($_POST['tabel_utama']);
+  $tabel_detail = fch($_POST['tabel_detail']);
   $aktif = fch($_POST['aktif']);    
   $sql =
   "SELECT
@@ -135,27 +125,17 @@ if(isset($_POST['tombol_tambah_detail']))
       '".$postfix."',
       '".$posisi."',
       '".$ikon."',
+      '".$tabel_utama."',
+      '".$tabel_detail."',
       '".$aktif."',
+      0,
       '".$id_user."',
       NOW(),
       NOW()
     )"; 
     mysqli_query($db,$sql) OR die(alert_php('error 143'));
     $id_detail = mysqli_insert_id($db); 
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_navigasi_detail',
-      '".$id_detail."',
-      'insert',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('error 158'));
+    insertLog($tb_detail,$id_detail,'insert');
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&detail&id='.$id.'&sukses_tambah='.$nama);
   }  
 }
@@ -214,20 +194,7 @@ if(isset($_POST['tombol_ubah_detail']))
     WHERE
       a.id_detail = '".$id_detail."'";    
     mysqli_query($db,$sql) OR die(alert_php('error 216'));
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_navigasi_detail',
-      '".$id_detail."',
-      'update',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('error 230'));
+    insertLog($tb_detail,$id_detail,'update');
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&detail&id='.$id.'&id_detail='.$id_detail.'&sukses_ubah='.$nama);
   }  
 }
@@ -242,20 +209,7 @@ if(isset($_POST['tombol_hapus_detail']))
   WHERE
     id_detail = '".$id_detail."'";
   mysqli_query($db,$sql) OR die(alert_php('error 244'));
-  $sql =
-  "INSERT INTO
-    tb_log
-  VALUES
-  (
-    default,
-    'tb_master_navigasi_detail',
-    '".$id_detail."',
-    'delete',
-    '".$id_user."',      
-    NOW(),
-    NOW()
-  )";
-  mysqli_query($db,$sql) OR die(alert_php('error 258'));
+  insertLog($tb_detail,$id_detail,'delete');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&detail&id='.$id.'&id_detail='.$id_detail.'&sukses_hapus='.$nama);
 }
 if(isset($_POST['tombol_ubah']))
@@ -290,20 +244,7 @@ if(isset($_POST['tombol_ubah']))
     WHERE
       a.id = '".$id."'";
     mysqli_query($db,$sql) OR die(alert_php('163'));
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_navigasi',
-      '".$id."',
-      'update',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('177'));
+    insertLog($tb_utama,$id,'update');
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah');
   }  
 }
@@ -330,20 +271,7 @@ if(isset($_POST['tombol_hapus']))
       WHERE
         id_detail = '".$row['id_detail']."'";
       mysqli_query($db,$sql2) OR die(alert_php('error 217'));
-      $sql2 =
-      "INSERT INTO
-        tb_log
-      VALUES
-      (
-        default,
-        'tb_master_navigasi_detail',
-        '".$id_detail."',
-        'delete',
-        '".$id_user."',      
-        NOW(),
-        NOW()
-      )";
-      mysqli_query($db,$sql2) OR die(alert_php('error 231'));
+      insertLog($tb_detail,$id_detail,'delete');
     }
   }
   $sql =
@@ -352,20 +280,7 @@ if(isset($_POST['tombol_hapus']))
   WHERE
     id = '".$id."'";
   mysqli_query($db,$sql) OR die(alert_php('error 239'));
-  $sql =
-  "INSERT INTO
-    tb_log
-  VALUES
-  (
-    default,
-    'tb_master_navigasi',
-    '".$id."',
-    'delete',
-    '".$id_user."',      
-    NOW(),
-    NOW()
-  )";
-  mysqli_query($db,$sql) OR die(alert_php('error 230'));
+  insertLog($tb_utama,$id,'delete');
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus='.$nama);
 }
 if(isset($_POST['tombol_update']))
@@ -412,20 +327,7 @@ if(isset($_POST['tombol_update']))
       )";
       mysqli_query($db,$sql) OR die('error 174');
       $id_detail = mysqli_insert_id($db);
-      $sql =
-      "INSERT INTO
-        tb_log
-      VALUES
-      (
-        default,
-        'tb_master_user_detail',
-        '".$id_detail."',
-        'insert',
-        '".$id_user."',      
-        NOW(),
-        NOW()
-      )";
-      mysqli_query($db,$sql) OR die('error 189');
+      insertLog($tb_detail,$id_detail,'insert');
     }
   }  
   navigasi_ke('?id_nav_detail='.$id_nav_detail.'&detail&id='.$id.'&sukses_update');
@@ -692,7 +594,7 @@ if(isset($_POST['tombol_update']))
             </div>
           </div>
           <div class="box-footer">
-            <?php echo showLog('tb_master_navigasi'); ?>
+            <?php echo showLog($tb_utama); ?>
           </div>
         </div>
       </div>
@@ -795,10 +697,21 @@ if(isset($_POST['tombol_update']))
               <div class="row">
                 <div class="col-md-2">
                   <div class="form-group">
+                    <label for="tabel_utama">Tabel Utama :</label>
+                    <input autofocus type="text" name="tabel_utama" id="tabel_utama" class="form-control" autocomplete="off" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="tabel_detail">Tabel Detail :</label>
+                    <input autofocus type="text" name="tabel_detail" id="tabel_detail" class="form-control" autocomplete="off" required>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <div class="form-group">
                     <label for="aktif">Status :</label>
                     <select id="aktif" name="aktif" class="form-control select2" style="width: 100%;" required>
-                      <option value="">Pilih..</option>
-                      <option value="1">Aktif</option>
+                      <option value="1" selected>Aktif</option>
                       <option value="0">Non Aktif</option>
                     </select>
                   </div>
@@ -1091,6 +1004,8 @@ if(isset($_POST['tombol_update']))
                   a.postfix,
                   a.posisi,
                   a.ikon,
+                  a.tabel_utama,
+                  a.tabel_detail,
                   a.aktif,
                   a.created_at,
                   a.updated_at
@@ -1131,6 +1046,14 @@ if(isset($_POST['tombol_update']))
                   if($_GET['sort_by'] == 'ikon')
                   { 
                     $sql .= " ORDER BY a.ikon ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'tabel_utama')
+                  { 
+                    $sql .= " ORDER BY a.tabel_utama ".$_GET['order']."";
+                  }
+                  if($_GET['sort_by'] == 'tabel_detail')
+                  { 
+                    $sql .= " ORDER BY a.tabel_detail ".$_GET['order']."";
                   }
                   if($_GET['sort_by'] == 'aktif')
                   { 
@@ -1174,6 +1097,8 @@ if(isset($_POST['tombol_update']))
                     <th>Postfix <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='postfix' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=postfix&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='postfix' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=postfix&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Posisi <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='posisi' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=posisi&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='posisi' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=posisi&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Ikon <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='ikon' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=ikon&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='ikon' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=ikon&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Tabel Utama <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tabel_utama' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=tabel_utama&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tabel_utama' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=tabel_utama&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
+                    <th>Tabel Detail <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tabel_detail' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=tabel_detail&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='tabel_detail' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=tabel_detail&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Status <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=aktif&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='aktif' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=aktif&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Created At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=created_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='created_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=created_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
                     <th>Updated At <a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='desc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=updated_at&order=desc"><i class="fa fa-sort-up fa-lg"></i></a><a <?php if(isset($_GET['sort_by']) AND $_GET['sort_by']=='updated_at' AND $_GET['order']=='asc') echo 'style="color:red;"'; else echo 'style="color:black;"';?> href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&detail&id=<?php echo $id; ?>&sort_by=updated_at&order=asc"><i class="fa fa-sort-down fa-lg"></i></a></th>
@@ -1206,6 +1131,8 @@ if(isset($_POST['tombol_update']))
                     <td><?php echo $row['postfix']; ?></td>
                     <td><?php echo $row['posisi']; ?></td>
                     <td><i class="fa fa-sm <?php echo $row['ikon']; ?>"></i> <?php echo $row['ikon']; ?></td>
+                    <td><?php echo $row['tabel_utama']; ?></td>
+                    <td><?php echo $row['tabel_detail']; ?></td>
                     <td><span class=" label label-<?php echo $label; ?>"><?php echo $status; ?></span></td>
                     <td><?php echo date('d-M-Y H:i:s',strtotime($row['created_at'])); ?></td>
                     <td><?php echo date('d-M-Y H:i:s',strtotime($row['updated_at'])); ?></td>
@@ -1223,32 +1150,7 @@ if(isset($_POST['tombol_update']))
             </div>
           </div>
           <div class="box-footer">
-            <?php
-            $sql=
-            "SELECT
-              a.tabel,
-              a.aksi,
-              a.id_tabel,              
-              b.nama,
-              a.created_at
-            FROM
-              tb_log AS a
-            LEFT JOIN
-              tb_master_user AS b ON (b.id = a.id_user)
-            WHERE
-              a.tabel = 'tb_master_navigasi_detail'"; 
-            $sql.=" ORDER BY a.created_at DESC LIMIT 1";
-            $res=mysqli_query($db,$sql) OR die('error 1275');
-            if(mysqli_num_rows($res)!=0)
-            {
-              while($row=mysqli_fetch_assoc($res))
-              {
-              ?>
-            <small>Aksi Terakhir : <?php echo strtoupper($row['aksi']); ?> ID=<?php echo strtoupper($row['id_tabel']); ?> , pada tanggal <?php echo date("d M Y", strtotime($row['created_at'])); ?> , pukul <?php echo date("H:i:s", strtotime($row['created_at'])); ?> , oleh <?php echo ucwords($row['nama']); ?></small>
-            <?php 
-              }
-            }
-            ?>
+            <?php echo showLog($tb_detail); ?>
           </div>
         </div>
       </div>
@@ -1309,8 +1211,7 @@ if(isset($_POST['tombol_update']))
                   <div class="form-group">
                     <label for="aktif">Status :</label>
                     <select id="aktif" name="aktif" class="form-control select2" style="width: 100%;" required>
-                      <option value="">Pilih..</option>
-                      <option value="1">Aktif</option>
+                      <option value="1" selected>Aktif</option>
                       <option value="0">Non Aktif</option>
                     </select>
                   </div>

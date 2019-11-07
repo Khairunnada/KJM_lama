@@ -49,8 +49,9 @@ if(isset($_POST['tombol_tambah']))
       NOW()
     )"; 
     mysqli_query($db,$sql) OR die(alert_php('error 53'));  
-    $id = mysqli_insert_id($db); 
-    $sql =
+    $id = mysqli_insert_id($db);
+    insertLog($tabel,$id,$aksi); 
+    /*$sql =
     "INSERT INTO
       tb_log
     VALUES
@@ -63,8 +64,8 @@ if(isset($_POST['tombol_tambah']))
       NOW(),
       NOW()
     )";
-    mysqli_query($db,$sql) OR die(alert_php('error 68'));
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses_tambah='.$lokasi);
+    mysqli_query($db,$sql) OR die(alert_php('error 68'));*/
+    //navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses_tambah='.$lokasi);
   }
 }
 if(isset($_POST['tombol_ubah']))

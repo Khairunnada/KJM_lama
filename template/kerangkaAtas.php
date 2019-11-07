@@ -12,7 +12,9 @@ if(isset($_GET['id_nav_detail']))
   "SELECT
     b.id,
     a.nama as nav_detail,
-    b.nama as nav
+    b.nama as nav,
+    a.tabel_utama,
+    a.tabel_detail
   FROM
     tb_master_navigasi_detail AS a
   JOIN
@@ -27,6 +29,8 @@ if(isset($_GET['id_nav_detail']))
       $id_nav = $row['id'];
       $nav = $row['nav'];
       $nav_detail = $row['nav_detail'];
+      $tb_utama = $row['tabel_utama'];
+      $tb_detail = $row['tabel_detail'];
     }    
   }
   if(cek_page_avail($id_user,$id_nav_detail) == 0)
