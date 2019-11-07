@@ -612,45 +612,10 @@ if(isset($_POST['tombol_hapus']))
         <form method="POST">
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Kode : </label>
-                  <input type="text" name="kode" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['kode_'.$id_nav_detail])) echo $_SESSION['kode_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label>Mata Uang : </label>
-                  <input type="text" name="mata_uang" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['barang_'.$id_nav_detail])) echo $_SESSION['barang_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>Satuan : </label>
-                  <select name="id_satuan" class="form-control select2" style="width: 100%;">
-                    <option value="">Semua</option>
-                    <?php
-                    $sql =
-                    "SELECT
-                      a.id,
-                      a.satuan
-                    FROM
-                      tb_master_barang_satuan AS a
-                    WHERE
-                      a.aktif = 1";
-                    $sql .= " ORDER BY a.satuan";
-                    $res = mysqli_query($db,$sql) OR die(alert_php('error 1559'));
-                    if(mysqli_num_rows($res) != 0)
-                    {
-                      while($row = mysqli_fetch_assoc($res))
-                      {
-                      ?>
-                    <option value="<?php echo $row['id']; ?>" <?php if(isset($_SESSION['id_satuan'.$id_nav_detail]) AND $row['id'] == $_SESSION['id_satuan'.$id_nav_detail]) echo 'selected'; ?>><?php echo $row['satuan']; ?></option>
-                    <?php
-                      }
-                    }
-                    ?>
-                  </select>
+                  <input type="text" name="mata_uang" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['mata_uang'.$id_nav_detail])) echo $_SESSION['mata_uang'.$id_nav_detail]; ?>">
                 </div>
               </div>
               <div class="col-md-2">
