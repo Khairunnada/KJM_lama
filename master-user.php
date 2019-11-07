@@ -524,32 +524,7 @@ if(isset($_POST['tombol_update']))
             </div>
           </div>
           <div class="box-footer">
-            <?php
-            $sql=
-            "SELECT
-              a.tabel,
-              a.aksi,
-              a.id_tabel,              
-              b.nama,
-              a.created_at
-            FROM
-              tb_log AS a
-            LEFT JOIN
-              tb_master_user AS b ON (b.id = a.id_user)
-            WHERE
-              a.tabel = 'tb_master_user'"; 
-            $sql.=" ORDER BY a.created_at DESC LIMIT 1";
-            $res=mysqli_query($db,$sql) OR die('error 514');
-            if(mysqli_num_rows($res)!=0)
-            {
-              while($row=mysqli_fetch_assoc($res))
-              {
-              ?>
-            <small>Aksi Terakhir : <?php echo strtoupper($row['aksi']); ?> ID=<?php echo strtoupper($row['id_tabel']); ?> , pada tanggal <?php echo date("d M Y", strtotime($row['created_at'])); ?> , pukul <?php echo date("H:i:s", strtotime($row['created_at'])); ?> , oleh <?php echo ucwords($row['nama']); ?></small>
-            <?php 
-              }
-            }
-            ?>
+            <?php echo showLog('tb_master_user'); ?>
           </div>
         </div>
       </div>
