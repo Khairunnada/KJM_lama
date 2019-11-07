@@ -37,11 +37,12 @@ if(isset($_POST['tombol_tambah']))
   FROM
     tb_master_user as a
   WHERE
-    a.username = '".$username."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 41'));
+    a.username = '".$username."' AND
+    a.hapus = 0";
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 42'));
   if(mysqli_num_rows($res) != 0)
   {
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$nama);
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$username);
   }
   else
   {
@@ -63,10 +64,10 @@ if(isset($_POST['tombol_tambah']))
       NOW(),
       NOW()
     )";
-    mysqli_query($db,$sql) OR die('error 51');
+    mysqli_query($db,$sql) OR die(alert_php('error 67'));
     $id = mysqli_insert_id($db); 
     insertLog($tb_utama,$id,'insert');  
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses_tambah='.$nama);
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses_tambah='.$username);
   }  
 }
 if(isset($_POST['tombol_ubah']))
@@ -88,10 +89,10 @@ if(isset($_POST['tombol_ubah']))
     a.username = '".$username."' AND
     a.id <> '".$id."' AND
     a.hapus = 0";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 89'));
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 92'));
   if(mysqli_num_rows($res) != 0)
   {
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_ubah='.$username);
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&gagal_ubah='.$username);
   }
   else
   {
@@ -103,7 +104,7 @@ if(isset($_POST['tombol_ubah']))
       a.updated_at = NOW()
     WHERE
       a.id = '".$id."'";
-    mysqli_query($db,$sql) OR die('error 109');    
+    mysqli_query($db,$sql) OR die(alert_php('error 107'));    
     $sql = 
     "INSERT INTO
       tb_master_user
@@ -122,22 +123,24 @@ if(isset($_POST['tombol_ubah']))
       NOW(),
       NOW()
     )";
-    mysqli_query($db,$sql) OR die('error 125');
+    mysqli_query($db,$sql) OR die(alert_php('error 126'));
+    $id = mysqli_insert_id($db);
     insertLog($tb_utama,$id,'update');
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_ubah='.$nama);
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah='.$username);
   }  
 }
 if(isset($_POST['tombol_hapus']))
 {
   $id = fch($_POST['id']);
+  $username = fch($_POST['username']);
   $sql=
   "SELECT
-    *
+    a.id_detail
   FROM
     tb_master_user_detail AS a
   WHERE
     a.id = '".$id."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 118'));
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 141'));
   if(mysqli_num_rows($res) != 0)
   {
     while($row = mysqli_fetch_assoc($res))
@@ -150,7 +153,7 @@ if(isset($_POST['tombol_hapus']))
         a.hapus = 1
       WHERE
         id_detail = '".$row['id_detail']."'";
-      mysqli_query($db,$sql2) OR die(alert_php('error 135'));
+      mysqli_query($db,$sql2) OR die(alert_php('error 154'));
       insertLog($tb_detail,$id_detail,'delete');
     }
   }
@@ -161,9 +164,9 @@ if(isset($_POST['tombol_hapus']))
     a.hapus = 1
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die(alert_php('error 147'));
+  mysqli_query($db,$sql) OR die(alert_php('error 165'));
   insertLog($tb_utama,$id,'delete');
-  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus');
+  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&sukses_hapus='.$username);
 }
 if(isset($_POST['tombol_update']))
 {
@@ -173,7 +176,7 @@ if(isset($_POST['tombol_update']))
     tb_master_user_detail
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die('error 140');
+  mysqli_query($db,$sql) OR die('error 177');
   if(isset($_POST['navigasi_detail']) AND count($_POST['navigasi_detail']) != 0)
   {
     $navigasi_detail = $_POST['navigasi_detail'];
@@ -186,7 +189,7 @@ if(isset($_POST['tombol_update']))
         tb_master_navigasi_detail AS a
       WHERE
         a.id_detail = '".$id_navigasi_detail."'";
-      $res = mysqli_query($db,$sql) OR die('error 153');
+      $res = mysqli_query($db,$sql) OR die('error 190');
       if(mysqli_num_rows($res) != 0)
       {
         while($row = mysqli_fetch_assoc($res))
@@ -209,7 +212,7 @@ if(isset($_POST['tombol_update']))
         NOW(),
         NOW()
       )";
-      mysqli_query($db,$sql) OR die('error 174');
+      mysqli_query($db,$sql) OR die('error 213');
       $id_detail = mysqli_insert_id($db);
       insertLog($tb_detail,$id_detail,'insert');
     }
@@ -263,7 +266,7 @@ if(isset($_POST['tombol_update']))
             ?>
             <div class="alert alert-success" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:black;">Berhasil Menambah User; <u><b><?php echo $_GET['sukses_tambah']; ?></b></u></div>
+              <div style="color:white;">Berhasil Menambah; Username <u><b><?php echo $_GET['sukses_tambah']; ?></b></u></div>
             </div>
             <?php
             }
@@ -272,7 +275,7 @@ if(isset($_POST['tombol_update']))
             ?>
             <div class="alert alert-danger" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:black;">Gagal Menambah User; Username <u><b><?php echo $_GET['gagal_tambah']; ?></b></u> Sudah Ada</div>
+              <div style="color:white;">Gagal Menambah ; Sudah Ada Data Dengan Username <u><b><?php echo $_GET['gagal_tambah']; ?></b></u></div>
             </div>
             <?php
             }
@@ -281,7 +284,16 @@ if(isset($_POST['tombol_update']))
             ?>
             <div class="alert alert-success" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:black;">Berhasil Mengubah User</div>
+              <div style="color:white;">Berhasil Mengubah; Username <u><b><?php echo $_GET['sukses_ubah']; ?></b></u></div>
+            </div>
+            <?php
+            }
+            if(isset($_GET['gagal_ubah']))
+            {
+            ?>
+            <div class="alert alert-danger" style="padding:5px;">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <div style="color:white;">Gagal Mengubah ; Sudah Ada Data Dengan Username <u><b><?php echo $_GET['gagal_ubah']; ?></b></u></div>
             </div>
             <?php
             }
@@ -290,7 +302,7 @@ if(isset($_POST['tombol_update']))
             ?>
             <div class="alert alert-success" style="padding:5px;">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              <div style="color:black;">Berhasil Menghapus User</div>
+              <div style="color:white;">Berhasil Menghapus; Username <u><b><?php echo $_GET['sukses_hapus']; ?></b></u></div>
             </div>
             <?php
             }
@@ -317,7 +329,9 @@ if(isset($_POST['tombol_update']))
                 LEFT JOIN
                   tb_master_departemen AS c ON (c.id = a.id_departemen)
                 LEFT JOIN
-                  tb_master_jabatan AS d ON (d.id = a.id_jabatan)";
+                  tb_master_jabatan AS d ON (d.id = a.id_jabatan)
+                WHERE
+                  a.hapus = 0";
                 if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                 {
                   if(isset($_POST['tombol_filter']))
@@ -670,7 +684,8 @@ if(isset($_POST['tombol_update']))
                               tb_master_user_detail AS a
                             WHERE
                               a.id = '".$id."' AND
-                              a.id_navigasi_detail = '".$row2['id_detail']."'";
+                              a.id_navigasi_detail = '".$row2['id_detail']."' AND
+                              a.hapus = 0";
                             $res3 = mysqli_query($db,$sql3) OR die('error 673');
                             if(mysqli_num_rows($res3) != 0)
                               $checked = 1;
@@ -1070,6 +1085,7 @@ if(isset($_POST['tombol_update']))
               <div class="row">
                 <div class="col-md-2">
                   <input type="hidden" name="id" value="<?php echo $id; ?>">
+                  <input type="hidden" name="username" value="<?php echo $username; ?>">
                   <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
                   <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
                 </div>
