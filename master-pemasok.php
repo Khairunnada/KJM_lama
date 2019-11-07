@@ -109,16 +109,32 @@ if(isset($_POST['tombol_ubah']))
 {
   //Update hapus 
   $id = fch($_POST['id']);
+  $pemasok = fch($_POST['pemasok']);
+  $alamat = fch($_POST['alamat']);
+  $kota = fch($_POST['kota']);
+  $telp = fch($_POST['telp']);
+  $fax = fch($_POST['fax']);
+  $email = fch($_POST['email']);
+  $cp = fch($_POST['cp']);
+  $catatan = fch($_POST['catatan']);
+  $ppn = fch($_POST['ppn']);
+  $pph = fch($_POST['pph']);
+  $mata_uang = fch($_POST['mata_uang']);
+  $nama_bank = fch($_POST['nama_bank']);
+  $atas_nama = fch($_POST['atas_nama']);
+  $no_rekening = fch($_POST['no_rekening']);
+  $aktif = fch($_POST['aktif']);
   $hapus = fch($_POST['hapus']);
   $sql =
   "SELECT
-    *
+    a.id
   FROM
     tb_master_pemasok AS a
   WHERE
     a.pemasok = '".$pemasok."' AND
-    a.id <> '".$id."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('160'));
+    a.id <> '".$id."'AND
+    a.hapus = 0";
+ $res = mysqli_query($db,$sql) OR die(alert_php('160'));
   if(mysqli_num_rows($res) != 0)
   {
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&gagal_ubah='.$pemasok);
@@ -149,41 +165,6 @@ if(isset($_POST['tombol_ubah']))
       NOW()
     )";
     mysqli_query($db,$sql) OR die(alert_php('177'));
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah');
-  }  
-  //Update hapus
-
-  //Insert hasil update
-  unset($_SESSION['tombol_filter_'.$id_nav_detail]);  
-  $pemasok = fch($_POST['pemasok']);
-  $alamat = fch($_POST['alamat']);
-  $kota = fch($_POST['kota']);
-  $telp = fch($_POST['telp']);
-  $fax = fch($_POST['fax']);
-  $email = fch($_POST['email']);
-  $cp = fch($_POST['cp']);
-  $catatan = fch($_POST['catatan']);
-  $ppn = fch($_POST['ppn']);
-  $pph = fch($_POST['pph']);
-  $mata_uang = fch($_POST['mata_uang']);
-  $nama_bank = fch($_POST['nama_bank']);
-  $atas_nama = fch($_POST['atas_nama']);
-  $no_rekening = fch($_POST['no_rekening']);
-  $aktif = fch($_POST['aktif']);
-  $sql =
-  "SELECT
-    a.id
-  FROM
-    tb_master_pemasok as a
-  WHERE
-    a.pemasok = '".$pemasok."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 47'));
-  if(mysqli_num_rows($res) != 0)
-  {
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$pemasok);
-  }
-  else
-  {
     $sql = 
     "INSERT INTO
       tb_master_pemasok
@@ -225,9 +206,9 @@ if(isset($_POST['tombol_ubah']))
       NOW()
     )";
     mysqli_query($db,$sql) OR die(alert_php('error 83'));
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
+    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah='.$pemasok);
   }  
-  //Insert hasil update
+  
 }
 
 
