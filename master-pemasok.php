@@ -42,8 +42,8 @@ if(isset($_POST['tombol_tambah']))
   $catatan = fch($_POST['catatan']);
   $ppn = fch($_POST['ppn']);
   $pph = fch($_POST['pph']);
-  $mata_uang = fch($_POST['mata_uang']);
-  $nama_bank = fch($_POST['nama_bank']);
+  $id_mata_uang = fch($_POST['id_mata_uang']);
+  $id_bank = fch($_POST['id_bank']);
   $atas_nama = fch($_POST['atas_nama']);
   $no_rekening = fch($_POST['no_rekening']);
   $aktif = fch($_POST['aktif']);
@@ -54,7 +54,7 @@ if(isset($_POST['tombol_tambah']))
     tb_master_pemasok as a
   WHERE
     a.pemasok = '".$pemasok."'";
-  $res = mysqli_query($db,$sql) OR die(alert_php('error 47'));
+  $res = mysqli_query($db,$sql) OR die(alert_php('error 56'));
   if(mysqli_num_rows($res) != 0)
   {
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&gagal_tambah='.$pemasok);
@@ -77,31 +77,19 @@ if(isset($_POST['tombol_tambah']))
       '".$catatan."',
       '".$ppn."',
       '".$pph."',
-      '".$mata_uang."',
-      '".$nama_bank."',
+      '".$id_mata_uang."',
+      '".$id_bank."',
       '".$atas_nama."',
       '".$no_rekening."',
       '".$aktif."',
       0,
+      '".$id_user."',
       NOW(),
       NOW()
     )"; 
-    mysqli_query($db,$sql) OR die(alert_php('error 68'));  
+    mysqli_query($db,$sql) OR die(alert_php('error 89'));  
     $id = mysqli_insert_id($db); 
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_pemasok',
-      '".$id."',
-      'insert',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('error 83'));
+    insertLog($tb_utama,$id,'insert');    
     navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_tambah');
   }  
 }
@@ -119,8 +107,8 @@ if(isset($_POST['tombol_ubah']))
   $catatan = fch($_POST['catatan']);
   $ppn = fch($_POST['ppn']);
   $pph = fch($_POST['pph']);
-  $mata_uang = fch($_POST['mata_uang']);
-  $nama_bank = fch($_POST['nama_bank']);
+  $id_mata_uang = fch($_POST['id_mata_uang']);
+  $id_bank = fch($_POST['id_bank']);
   $atas_nama = fch($_POST['atas_nama']);
   $no_rekening = fch($_POST['no_rekening']);
   $aktif = fch($_POST['aktif']);
@@ -151,20 +139,7 @@ if(isset($_POST['tombol_ubah']))
       a.id = '".$id."'";
     
     mysqli_query($db,$sql) OR die(alert_php('163'));
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_pemasok',
-      '".$id."',
-      'update',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('177'));
+    insertLog($tb_utama,$id,'update'); 
     $sql = 
     "INSERT INTO
       tb_master_pemasok
@@ -181,62 +156,39 @@ if(isset($_POST['tombol_ubah']))
       '".$catatan."',
       '".$ppn."',
       '".$pph."',
-      '".$mata_uang."',
-      '".$nama_bank."',
+      '".$id_mata_uang."',
+      '".$id_bank."',
       '".$atas_nama."',
       '".$no_rekening."',
       '".$aktif."',
       0,
+      '".$id_user."',
       NOW(),
       NOW()
     )"; 
-    mysqli_query($db,$sql) OR die(alert_php('error 68'));  
+    mysqli_query($db,$sql) OR die(alert_php('error 168'));  
     $id = mysqli_insert_id($db); 
-    $sql =
-    "INSERT INTO
-      tb_log
-    VALUES
-    (
-      default,
-      'tb_master_pemasok',
-      '".$id."',
-      'insert',
-      '".$id_user."',      
-      NOW(),
-      NOW()
-    )";
-    mysqli_query($db,$sql) OR die(alert_php('error 83'));
-    navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah='.$pemasok);
+    insertLog($tb_utama,$id,'insert'); 
+    //navigasi_ke('?id_nav_detail='.$id_nav_detail.'&page='.$page.'&daftar&id='.$id.'&sukses_ubah='.$pemasok);
   }  
   
 }
-
 
 if(isset($_POST['tombol_hapus']))
 {
   $id = fch($_POST['id']);
   $pemasok = fch($_POST['pemasok']);
   $sql =
-  "DELETE FROM
-    tb_master_pemasok
+  "UPDATE
+    tb_master_pemasok AS a
+  SET
+    a.hapus = 1,
+    a.updated_at = NOW()
   WHERE
     id = '".$id."'";
-  mysqli_query($db,$sql) OR die(alert_php('error 239'));
-  $sql =
-  "INSERT INTO
-    tb_log
-  VALUES
-  (
-    default,
-    'tb_master_pemasok',
-    '".$id."',
-    'delete',
-    '".$id_user."',    
-    NOW(),
-    NOW()
-  )";
-  mysqli_query($db,$sql) OR die(alert_php('error 230'));
-  //navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus='.$pemasok);
+  mysqli_query($db,$sql) OR die(alert_php('error 188'));
+  insertLog($tb_utama,$id,'delete'); 
+  navigasi_ke('?id_nav_detail='.$id_nav_detail.'&daftar&id='.$id.'&sukses_hapus='.$pemasok);
 }
 
 ?>
@@ -244,6 +196,7 @@ if(isset($_POST['tombol_hapus']))
   <?php include 'template/content_header.php';?>
   <?php
 //PAGE_DAFTAR
+
   if(isset($_GET['daftar']))
   {    
   ?>
@@ -342,10 +295,12 @@ if(isset($_POST['tombol_hapus']))
                   a.cp ,
                   a.ppn ,
                   a.pph ,
-                  a.mata_uang ,
+                  b.mata_uang ,
                   a.aktif 
                   FROM
-                  tb_master_pemasok AS a 
+                    tb_master_pemasok AS a 
+                  LEFT JOIN
+                    tb_master_mata_uang AS b ON (b.id = a.id_mata_uang AND b.aktif = 1)
                 WHERE
                   a.aktif = 1 AND 
                   a.hapus = 0";
@@ -365,7 +320,7 @@ if(isset($_POST['tombol_hapus']))
                     $_SESSION['cp_'.$id_nav_detail] = $_POST['cp'];
                     $_SESSION['ppn_'.$id_nav_detail] = $_POST['ppn'];
                     $_SESSION['pph_'.$id_nav_detail] = $_POST['pph'];
-                    $_SESSION['mata_uang_'.$id_nav_detail] = $_POST['mata_uang'];
+                    $_SESSION['id_mata_uang_'.$id_nav_detail] = $_POST['id_mata_uang'];
                     $_SESSION['aktif_'.$id_nav_detail] = $_POST['aktif'];
                     $_SESSION['data_per_halaman_'.$id_nav_detail] = $_POST['data_per_halaman'];
                     
@@ -378,7 +333,7 @@ if(isset($_POST['tombol_hapus']))
                     $cp = $_POST['cp'];
                     $ppn = $_POST['ppn'];
                     $pph = $_POST['pph'];
-                    $mata_uang = $_POST['mata_uang'];
+                    $id_mata_uang = $_POST['id_mata_uang'];
                     $aktif = $_POST['aktif'];
                     $data_per_halaman = $_POST['data_per_halaman'];
                   }
@@ -394,11 +349,18 @@ if(isset($_POST['tombol_hapus']))
                     $cp = $_SESSION['cp_'.$id_nav_detail];
                     $ppn = $_SESSION['ppn_'.$id_nav_detail];
                     $pph = $_SESSION['pph_'.$id_nav_detail];
-                    $mata_uang = $_SESSION['mata_uang_'.$id_nav_detail];
+                    $id_mata_uang = $_SESSION['mata_uang_'.$id_nav_detail];
                     $aktif = $_SESSION['aktif_'.$id_nav_detail];
                     $data_per_halaman = $_SESSION['data_per_halaman_'.$id_nav_detail];
                   } 
                   $sql .= " WHERE a.pemasok LIKE '%".$pemasok."%'";
+                  
+                  
+                  //$sql .= " AND a.pemasok LIKE '%".$pemasok."%'";
+                  if($id_mata_uang != '')
+                  {
+                    $sql .= " AND a.id_mata_uang = '".$id_mata_uang."'";
+                  }
                   if($aktif != '')
                   {
                     $sql .= " AND a.aktif = '".$aktif."'";
@@ -453,7 +415,7 @@ if(isset($_POST['tombol_hapus']))
                   }
                   if($_GET['sort_by'] == 'mata_uang')
                   { 
-                    $sql .= " ORDER BY a.mata_uang ".$_GET['order']."";
+                    $sql .= " ORDER BY a.id_mata_uang ".$_GET['order']."";
                   }
                   
                   if($_GET['sort_by'] == 'aktif')
@@ -467,8 +429,8 @@ if(isset($_POST['tombol_hapus']))
                   $sql .= " ORDER BY a.id DESC";
                 }             
                 $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
-                $mulai = ($page > 1) ? ($page * $data_per_halaman) - $data_per_halaman : 0;
-                $result = mysqli_query($db,$sql) OR die('error 401');
+                $mulai = ($page > 1) ? ($page * $data_per_halaman) - $data_per_halaman : 0; 
+                $result = mysqli_query($db,$sql) OR die('error 432');
                 $total = mysqli_num_rows($result);              
                 if($data_per_halaman!=0)
                 {
@@ -479,7 +441,7 @@ if(isset($_POST['tombol_hapus']))
                 {
                   $pages = 0;
                 }
-                $res = mysqli_query($db,$sql) OR die('error 412');
+                $res = mysqli_query($db,$sql) OR die('error 443');
                 $nomor = $mulai + 1;
                 $sort_by = '';
                 if(isset($_GET['sort_by']) AND isset($_GET['order']))
@@ -571,30 +533,7 @@ if(isset($_POST['tombol_hapus']))
           </div>
           <div class="box-footer">
             <?php
-            $sql=
-            "SELECT
-              a.tabel,
-              a.aksi,
-              a.id_tabel,              
-              b.nama,
-              a.created_at
-            FROM
-              tb_log AS a
-            LEFT JOIN
-              tb_master_user AS b ON (b.id = a.id_user)
-            WHERE
-              a.tabel = 'tb_master_pemasok'"; 
-            $sql.=" ORDER BY a.created_at DESC LIMIT 1";
-            $res=mysqli_query($db,$sql) OR die('error 452');
-            if(mysqli_num_rows($res)!=0)
-            {
-              while($row=mysqli_fetch_assoc($res))
-              {
-              ?>
-            <small>Aksi Terakhir : <?php echo strtoupper($row['aksi']); ?> ID=<?php echo strtoupper($row['id_tabel']); ?> , pada tanggal <?php echo date("d M Y", strtotime($row['created_at'])); ?> , pukul <?php echo date("H:i:s", strtotime($row['created_at'])); ?> , oleh <?php echo ucwords($row['nama']); ?></small>
-            <?php 
-              }
-            }
+            echo showLog($tb_utama);
             ?>
           </div>
         </div>
@@ -671,25 +610,71 @@ if(isset($_POST['tombol_hapus']))
                 <div class="col-md-2">
                   <div class="form-group">
                     <label for="ppn">PPN :</label>
-                    <input autofocus type="text" name="ppn" id="ppn" class="form-control" autocomplete="off" required>
+                    <input autofocus type="text" name="ppn" id="ppn" value="0.000" class="form-control" autocomplete="off" required>
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
                     <label for="pph">PPH :</label>
-                    <input autofocus type="text" name="pph" id="pph" class="form-control" autocomplete="off" required>
+                    <input autofocus type="text" name="pph" id="pph" value="0.000" class="form-control" autocomplete="off" required>
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <label for="mata_uang">Mata Uang :</label>
-                    <input autofocus type="text" name="mata_uang" id="mata_uang" class="form-control" autocomplete="off" required>
+                    <label for="id_mata_uang">Mata Uang :</label>
+                    <select id="id_mata_uang" name="id_mata_uang" class="form-control select2" style="width: 100%;" required>
+                      <option value="">Pilih..</option>
+                      <?php
+                      $sql =
+                      "SELECT
+                        a.id,
+                        a.mata_uang
+                      FROM
+                        tb_master_mata_uang AS a
+                      WHERE
+                       a.aktif = 1";
+                      $sql .= " ORDER BY a.mata_uang ";
+                      $res = mysqli_query($db,$sql) OR die(alert_php('error 636'));
+                      if(mysqli_num_rows($res) != 0)
+                      {
+                        while($row = mysqli_fetch_assoc($res))
+                        {
+                        ?>
+                      <option value="<?php echo $row['id']; ?>"><?php echo $row['mata_uang']; ?></option>
+                      <?php
+                        }
+                      } 
+                      ?>
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <label for="nama_bank">Nama Bank :</label>
-                    <input autofocus type="text" name="nama_bank" id="nama_bank" class="form-control" autocomplete="off" required>
+                    <label for="id_bank">Nama Bank :</label>
+                    <select id="id_bank" name="id_bank" class="form-control select2" style="width: 100%;" required>
+                      <option value="">Pilih..</option>
+                      <?php
+                      $sql =
+                      "SELECT
+                        a.id,
+                        a.nama_bank
+                      FROM
+                        tb_master_bank AS a
+                      WHERE
+                       a.aktif = 1";
+                      $sql .= " ORDER BY a.nama_bank ";
+                      $res = mysqli_query($db,$sql) OR die(alert_php('error 665'));
+                      if(mysqli_num_rows($res) != 0)
+                      {
+                        while($row = mysqli_fetch_assoc($res))
+                        {
+                        ?>
+                      <option value="<?php echo $row['id']; ?>"><?php echo $row['nama_bank']; ?></option>
+                      <?php
+                        }
+                      } 
+                      ?>
+                    </select>
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -748,16 +733,22 @@ if(isset($_POST['tombol_hapus']))
       a.catatan ,
       a.ppn ,
       a.pph ,
-      a.mata_uang ,
-      a.nama_bank ,
+      b.mata_uang ,
+      c.nama_bank ,
       a.atas_nama ,
       a.no_rekening ,
       a.aktif 
     FROM
       tb_master_pemasok AS a
+    LEFT JOIN
+      tb_master_mata_uang AS b ON (b.id = a.id_mata_uang AND b.aktif = 1)
+    LEFT JOIN
+      tb_master_bank AS c ON (c.id = a.id_bank AND c.aktif = 1)
     WHERE
       a.id = '".$id."'";
-    $res = mysqli_query($db,$sql) OR die('error 957');
+
+
+    $res = mysqli_query($db,$sql) OR die('error 744'); echo $sql;
     if(mysqli_num_rows($res) != 0)
     {
       while($row = mysqli_fetch_assoc($res))
@@ -772,8 +763,8 @@ if(isset($_POST['tombol_hapus']))
         $catatan = $row['catatan'];
         $ppn = $row['ppn'];
         $pph = $row['pph'];
-        $mata_uang = $row['mata_uang'];
-        $nama_bank = $row['nama_bank'];
+        $id_mata_uang = $row['mata_uang'];
+        $id_bank = $row['id_bank'];
         $atas_nama = $row['atas_nama'];
         $no_rekening = $row['no_rekening'];
         $aktif = $row['aktif'];
@@ -852,53 +843,98 @@ if(isset($_POST['tombol_hapus']))
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <label for="mata_uang">Mata Uang :</label>
-                    <input type="text" name="mata_uang" id="mata_uang" class="form-control" autocomplete="off" value="<?php echo $mata_uang; ?>" required>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label for="nama_bank">Nama Bank :</label>
-                    <input type="text" name="nama_bank" id="nama_bank" class="form-control" autocomplete="off" value="<?php echo $nama_bank; ?>" required>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label for="atas_nama">Atas Nama :</label>
-                    <input type="text" name="atas_nama" id="atas_nama" class="form-control" autocomplete="off" value="<?php echo $atas_nama; ?>" required>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label for="no_rekening">No. Rekening :</label>
-                    <input type="text" name="no_rekening" id="no_rekening" class="form-control" autocomplete="off" value="<?php echo $no_rekening; ?>" required>
-                  </div>
-                </div>
-                <div class="col-md-2">
-                  <div class="form-group">
-                    <label for="aktif">Status :</label>
-                    <select id="aktif" name="aktif" class="form-control select2" style="width: 100%;" required>
-                      <option value="1" <?php if($aktif == 1) echo 'selected'; ?>>Aktif</option>
-                      <option value="0" <?php if($aktif == 0) echo 'selected'; ?>>Non Aktif</option>
+                    <label for="id_mata_uang">Mata Uang :</label>
+                    <select id="id_mata_uang" name="id_mata_uang" class="form-control select2" style="width: 100%;" required>
+                      <?php
+                      $sql =
+                      "SELECT
+                        a.id,
+                        a.mata_uang
+                      FROM
+                        tb_master_mata_uang AS a
+                      WHERE
+                       a.aktif = 1";
+                      $sql .= " ORDER BY a.mata_uang ";
+                      $res = mysqli_query($db,$sql) OR die(alert_php('error 851'));
+                      if(mysqli_num_rows($res) != 0)
+                      {
+                        while($row = mysqli_fetch_assoc($res))
+                        {
+                        ?>
+                      <option value="<?php echo $row['id']; ?>" <?php if($row['id'] == $id_mata_uang) echo 'selected'; ?>><?php echo $row['mata_uang']; ?></option>
+                      <?php
+                        }
+                      } 
+                      ?>
                     </select>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-2">
-                  <input type="hidden" name="id" value="<?php echo $id; ?>">
-                  <button type="submit" name="tombol_ubah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id_bank">Nama Bank :</label>
+                  <select id="id_bank" name="id_bank" class="form-control select2" style="width: 100%;" required>
+                    <?php
+                      $sql =
+                      "SELECT
+                        a.id,
+                        a.bank
+                      FROM
+                        tb_master_bank AS a
+                      WHERE
+                       a.aktif = 1";
+                      $sql .= " ORDER BY a.nama_bank ";
+                      $res = mysqli_query($db,$sql) OR die(alert_php('error 880')); echo $sql;
+                      if(mysqli_num_rows($res) != 0)
+                      {
+                        while($row = mysqli_fetch_assoc($res))
+                        {
+                        ?>
+                    <option value="<?php echo $row['id']; ?>" <?php if($row['id'] == $id_bank) echo 'selected'; ?>><?php echo $row['id_bank']; ?></option>
+                    <?php
+                        }
+                      } 
+                      ?>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="atas_nama">Atas Nama :</label>
+                  <input type="text" name="atas_nama" id="atas_nama" class="form-control" autocomplete="off" value="<?php echo $atas_nama; ?>" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="no_rekening">No. Rekening :</label>
+                  <input type="text" name="no_rekening" id="no_rekening" class="form-control" autocomplete="off" value="<?php echo $no_rekening; ?>" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="aktif">Status :</label>
+                  <select id="aktif" name="aktif" class="form-control select2" style="width: 100%;" required>
+                    <option value="1" <?php if($aktif == 1) echo 'selected'; ?>>Aktif</option>
+                    <option value="0" <?php if($aktif == 0) echo 'selected'; ?>>Non Aktif</option>
+                  </select>
                 </div>
               </div>
             </div>
-            <div class="box-footer"></div>
-          </form>
+            <div class="row">
+              <div class="col-md-2">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                <button type="submit" name="tombol_ubah" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-save"></i> Simpan</button>
+                <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
+              </div>
+            </div>
         </div>
+        <div class="box-footer"></div>
+        </form>
       </div>
     </div>
-  </section>
-  <?php 
+</div>
+</section>
+<?php 
   }
 //PAGE_UBAH
 
@@ -922,171 +958,218 @@ if(isset($_POST['tombol_hapus']))
       }
     }
   ?>
-  <section class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Hapus Pemasok</h3>
-          </div>
-          <form role="form" method="POST">
-            <div class="box-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <label>Anda Yakin Ingin Menghapus Pemasok : <b><u><?php echo $pemasok; ?></u></b> ?</label>
-                </div>
-              </div>
-              <br>
-              <div class="row">
-                <div class="col-md-2">
-                  <input type="hidden" name="id" value="<?php echo $id; ?>">
-                  <input type="hidden" name="pemasok" value="<?php echo $pemasok; ?>">
-                  <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
-                  <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
-                </div>
-              </div>
-            </div>
-            <div class="box-footer"></div>
-          </form>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Hapus Pemasok</h3>
         </div>
-      </div>
-    </div>
-  </section>
-  <?php 
-  }
-//PAGE_HAPUS
-  ?>
-  <!-- modal -->
-  <div class="modal fade" id="ModalFilter">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Filter Data</h4>
-        </div>
-        <form method="POST">
-          <div class="modal-body">
+        <form role="form" method="POST">
+          <div class="box-body">
             <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Pemasok: </label>
-                  <input type="text" name="pemasok" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pemasok_'.$id_nav_detail])) echo $_SESSION['pemasok_'.$id_nav_detail]; ?>">
-                </div>
+              <div class="col-md-12">
+                <label>Anda Yakin Ingin Menghapus Pemasok : <b><u><?php echo $pemasok; ?></u></b> ?</label>
               </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Alamat: </label>
-                  <input type="text" name="alamat" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['alamat_'.$id_nav_detail])) echo $_SESSION['alamat_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Kota: </label>
-                  <input type="text" name="kota" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['kota_'.$id_nav_detail])) echo $_SESSION['kota_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Telepon: </label>
-                  <input type="text" name="telp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['telp_'.$id_nav_detail])) echo $_SESSION['telp_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Fax: </label>
-                  <input type="text" name="fax" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['fax_'.$id_nav_detail])) echo $_SESSION['fax_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Email: </label>
-                  <input type="text" name="email" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['email_'.$id_nav_detail])) echo $_SESSION['email_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>CP: </label>
-                  <input type="text" name="cp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['cp_'.$id_nav_detail])) echo $_SESSION['cp_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Catatan: </label>
-                  <input type="text" name="catatan" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['catatan_'.$id_nav_detail])) echo $_SESSION['catatan_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>PPN: </label>
-                  <input type="text" name="ppn" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['ppn_'.$id_nav_detail])) echo $_SESSION['ppn_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>PPH: </label>
-                  <input type="text" name="pph" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pph_'.$id_nav_detail])) echo $_SESSION['pph_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Mata Uang: </label>
-                  <input type="text" name="mata_uang" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['mata_uang_'.$id_nav_detail])) echo $_SESSION['mata_uang_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Nama Bank: </label>
-                  <input type="text" name="nama_bank" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['nama_bank_'.$id_nav_detail])) echo $_SESSION['nama_bank_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Atas Nama: </label>
-                  <input type="text" name="atas_nama" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['atas_nama_'.$id_nav_detail])) echo $_SESSION['atas_nama_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>No Rekening: </label>
-                  <input type="text" name="no_rekening" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['no_rekening_'.$id_nav_detail])) echo $_SESSION['no_rekening_'.$id_nav_detail]; ?>">
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Status : </label>
-                  <select name="aktif" class="form-control select2" style="width: 100%;">
-                    <option value="" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == '') echo 'selected';?>>Semua</option>
-                    <option value="1" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == 1) echo 'selected';?>>Aktif</option>
-                    <option value="0" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == '0') echo 'selected';?>>Non Aktif</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Data/Halaman : </label>
-                  <select name="data_per_halaman" class="form-control select2" style="width: 100%;">
-                    <option value="" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='') echo 'selected';?>>Semua</option>
-                    <option value="15" <?php if(!isset($_SESSION['data_per_halaman_'.$id_nav_detail]) OR (isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail] == '15')) echo 'selected';?>>15</option>
-                    <option value="25" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='25') echo 'selected';?>>25</option>
-                    <option value="50" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='50') echo 'selected';?>>50</option>
-                    <option value="100" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='100') echo 'selected';?>>100</option>
-                    <option value="250" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='250') echo 'selected';?>>250</option>
-                  </select>
-                </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-2">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                <input type="hidden" name="pemasok" value="<?php echo $pemasok; ?>">
+                <button type="submit" name="tombol_hapus" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-check"></i> Ya</button>
+                <a href="?id_nav_detail=<?php echo $id_nav_detail; ?>&page=<?php echo $page; ?>&daftar&id=<?php echo $id; ?>"><button type="button" class="btn btn-sm btn-flat btn-danger "><i class="fa fa-sm fa-times"></i> Batal</button></a>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" name="tombol_filter" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-search"></i> Filter</button>
-            <button type="button" class="btn btn-sm btn-flat btn-danger" data-dismiss="modal"><i class="fa fa-sm fa-times"></i> Batal</button>
-          </div>
+          <div class="box-footer"></div>
         </form>
       </div>
     </div>
   </div>
-  <!-- modal -->
+</section>
+<?php 
+  }
+//PAGE_HAPUS
+  ?>
+<!-- modal -->
+<div class="modal fade" id="ModalFilter">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Filter Data</h4>
+      </div>
+      <form method="POST">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Pemasok: </label>
+                <input type="text" name="pemasok" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pemasok_'.$id_nav_detail])) echo $_SESSION['pemasok_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Alamat: </label>
+                <input type="text" name="alamat" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['alamat_'.$id_nav_detail])) echo $_SESSION['alamat_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Kota: </label>
+                <input type="text" name="kota" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['kota_'.$id_nav_detail])) echo $_SESSION['kota_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Telepon: </label>
+                <input type="text" name="telp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['telp_'.$id_nav_detail])) echo $_SESSION['telp_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Fax: </label>
+                <input type="text" name="fax" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['fax_'.$id_nav_detail])) echo $_SESSION['fax_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Email: </label>
+                <input type="text" name="email" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['email_'.$id_nav_detail])) echo $_SESSION['email_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>CP: </label>
+                <input type="text" name="cp" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['cp_'.$id_nav_detail])) echo $_SESSION['cp_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Catatan: </label>
+                <input type="text" name="catatan" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['catatan_'.$id_nav_detail])) echo $_SESSION['catatan_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>PPN: </label>
+                <input type="text" name="ppn" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['ppn_'.$id_nav_detail])) echo $_SESSION['ppn_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>PPH: </label>
+                <input type="text" name="pph" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['pph_'.$id_nav_detail])) echo $_SESSION['pph_'.$id_nav_detail]; ?>">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Mata Uang : </label>
+                <select name="id_mata_uang" class="form-control select2" style="width: 100%;">
+                  <option value="">Semua</option>
+                  <?php
+                    $sql =
+                    "SELECT
+                      a.id,
+                      a.mata_uang
+                    FROM
+                      tb_master_mata_uang AS a
+                    WHERE
+                      a.aktif = 1";
+                    $sql .= " ORDER BY a.mata_uang";
+                    $res = mysqli_query($db,$sql) OR die(alert_php('error 1075'));
+                    if(mysqli_num_rows($res) != 0)
+                    {
+                      while($row = mysqli_fetch_assoc($res))
+                      {
+                      ?>
+                  <option value="<?php echo $row['id']; ?>" <?php if(isset($_SESSION['id_mata_uang'.$id_nav_detail]) AND $row['id'] == $_SESSION['id_mata_uang'.$id_nav_detail]) echo 'selected'; ?>><?php echo $row['mata_uang']; ?></option>
+                  <?php
+                      }
+                    }
+                    ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label>Satuan : </label>
+              <select name="id_bank" class="form-control select2" style="width: 100%;">
+                <option value="">Semua</option>
+                <?php
+                    $sql =
+                    "SELECT
+                      a.id,
+                      a.nama_bank
+                    FROM
+                      tb_master_bank AS a
+                    WHERE
+                      a.aktif = 1";
+                    $sql .= " ORDER BY a.nama_bank";
+                    $res = mysqli_query($db,$sql) OR die(alert_php('error 1559'));
+                    if(mysqli_num_rows($res) != 0)
+                    {
+                      while($row = mysqli_fetch_assoc($res))
+                      {
+                      ?>
+                <option value="<?php echo $row['id']; ?>" <?php if(isset($_SESSION['id_bank'.$id_nav_detail]) AND $row['id'] == $_SESSION['id_bank'.$id_nav_detail]) echo 'selected'; ?>><?php echo $row['bank']; ?></option>
+                <?php
+                      }
+                    }
+                    ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Atas Nama: </label>
+              <input type="text" name="atas_nama" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['atas_nama_'.$id_nav_detail])) echo $_SESSION['atas_nama_'.$id_nav_detail]; ?>">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>No Rekening: </label>
+              <input type="text" name="no_rekening" autocomplete="off" class="form-control" value="<?php if(isset($_SESSION['no_rekening_'.$id_nav_detail])) echo $_SESSION['no_rekening_'.$id_nav_detail]; ?>">
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Status : </label>
+              <select name="aktif" class="form-control select2" style="width: 100%;">
+                <option value="" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == '') echo 'selected';?>>Semua</option>
+                <option value="1" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == 1) echo 'selected';?>>Aktif</option>
+                <option value="0" <?php if(isset($_SESSION['aktif_'.$id_nav_detail]) AND $_SESSION['aktif_'.$id_nav_detail] == '0') echo 'selected';?>>Non Aktif</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Data/Halaman : </label>
+              <select name="data_per_halaman" class="form-control select2" style="width: 100%;">
+                <option value="" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='') echo 'selected';?>>Semua</option>
+                <option value="15" <?php if(!isset($_SESSION['data_per_halaman_'.$id_nav_detail]) OR (isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail] == '15')) echo 'selected';?>>15</option>
+                <option value="25" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='25') echo 'selected';?>>25</option>
+                <option value="50" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='50') echo 'selected';?>>50</option>
+                <option value="100" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='100') echo 'selected';?>>100</option>
+                <option value="250" <?php if(isset($_SESSION['data_per_halaman_'.$id_nav_detail]) AND $_SESSION['data_per_halaman_'.$id_nav_detail]=='250') echo 'selected';?>>250</option>
+              </select>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" name="tombol_filter" class="btn btn-sm btn-flat btn-success"><i class="fa fa-sm fa-search"></i> Filter</button>
+      <button type="button" class="btn btn-sm btn-flat btn-danger" data-dismiss="modal"><i class="fa fa-sm fa-times"></i> Batal</button>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+<!-- modal -->
 </div>
 <!-- /.content-wrapper -->
 <?php include 'template/kerangkaBawah.php'; ?>
