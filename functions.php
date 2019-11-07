@@ -3,6 +3,33 @@
 $background_genap = 'background:#E0FFFF;';
 $background_ganjil = 'background:#FFFFFF;';
 
+function showLog($nama_table)
+{
+  $db = $GLOBALS["db"];
+  $sql=
+  "SELECT
+    a.tabel,
+    a.aksi,
+    a.id_tabel,              
+    b.nama,
+    a.created_at
+  FROM
+    tb_log AS a
+  LEFT JOIN
+    tb_master_user AS b ON (b.id = a.id_user)
+  WHERE
+    a.tabel = '".$nama_table."'"; 
+  $sql.=" ORDER BY a.created_at DESC,a.id DESC LIMIT 1";
+  $res=mysqli_query($db,$sql) OR die('error 23');
+  if(mysqli_num_rows($res)!=0)
+  {
+    while($row=mysqli_fetch_assoc($res))
+    {
+      return '<small>Aksi Terakhir : '.strtoupper($row['aksi']).' ID='.strtoupper($row['id_tabel']).', pada tanggal '.date("d M Y", strtotime($row['created_at'])).', pukul '.date("H:i:s", strtotime($row['created_at'])).' , oleh '.ucwords($row['nama']).' </small>';
+    }
+  }
+}
+
 function cek_page_avail($id_user,$id_nav_detail)
 {
   $db = $GLOBALS["db"];
