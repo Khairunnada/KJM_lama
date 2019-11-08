@@ -878,7 +878,7 @@ if(isset($_POST['tombol_hapus']))
                       $sql =
                       "SELECT
                         a.id,
-                        a.bank
+                        a.nama_bank
                       FROM
                         tb_master_bank AS a
                       WHERE
