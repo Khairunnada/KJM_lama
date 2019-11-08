@@ -424,9 +424,8 @@ function cekKodeTerakhirUbah(prefix, current_prefix, counter) {
                 FROM
                   tb_master_barang AS a
                 LEFT JOIN
-                  tb_master_barang_satuan AS b ON (b.id = a.id_satuan AND b.aktif = 1)
+                  tb_master_barang_satuan AS b ON (b.id = a.id_satuan)
                 WHERE
-                  a.aktif = 1 AND
                   a.hapus = 0";
                 if(isset($_POST['tombol_filter']) OR isset($_SESSION['tombol_filter_'.$id_nav_detail]))
                 {
