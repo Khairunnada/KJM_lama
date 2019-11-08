@@ -888,7 +888,7 @@ if(isset($_POST['tombol_hapus']))
                       if(mysqli_num_rows($res) != 0)
                       {
                         while($row = mysqli_fetch_assoc($res))
-                        {
+                        { 
                         ?>
                     <option value="<?php echo $row['id']; ?>" <?php if($row['id'] == $id_bank) echo 'selected'; ?>><?php echo $row['id_bank']; ?></option>
                     <?php
